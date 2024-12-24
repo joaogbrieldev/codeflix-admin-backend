@@ -3,7 +3,7 @@
  * https://jestjs.io/docs/configuration
  */
 
-import type { Config } from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
   // All imported modules in your tests should be mocked automatically
@@ -197,24 +197,24 @@ const config: Config = {
   // Whether to use watchman for file crawling
   // watchman: true,
 
-  moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'src',
-  testRegex: '.*\\..*spec\\.ts$',
+  moduleFileExtensions: ["js", "json", "ts"],
+  rootDir: "test",
+  testRegex: ".*\\..*spec\\.ts$",
   transform: {
-    '^.+\\.(t|j)s$': '@swc/jest',
+    "^.+\\.(t|j)s$": "@swc/jest",
   },
-  collectCoverageFrom: ['**/*.(t|j)s'],
-  coverageDirectory: '../coverage',
+  collectCoverageFrom: ["**/*.(t|j)s"],
+  coverageDirectory: "../coverage",
   coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '.interface.ts',
-    '-interface.ts',
-    'shared/testing',
-    'shared-module/testing',
-    'validator-rules.ts',
-    '-fixture.ts',
-    '.input.ts',
-    '.d.ts',
+    "/node_modules/",
+    ".interface.ts",
+    "-interface.ts",
+    "shared/testing",
+    "shared-module/testing",
+    "validator-rules.ts",
+    "-fixture.ts",
+    ".input.ts",
+    ".d.ts",
   ],
   coverageThreshold: {
     global: {
@@ -224,9 +224,9 @@ const config: Config = {
       lines: 80,
     },
   },
-  testEnvironment: 'node',
+  testEnvironment: "node",
   //setupFilesAfterEnv: ['./core/shared/infra/testing/expect-helpers.ts'],
-  coverageProvider: 'v8',
+  coverageProvider: "v8",
   clearMocks: true,
 };
 

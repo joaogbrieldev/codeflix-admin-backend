@@ -2,6 +2,6 @@ import { IEntityBase } from "../../../../@shared/domain/contracts/entity/entity-
 
 export interface ICategory extends IEntityBase {
   name: string;
-  description: string;
-  is_active: boolean;
+  description?: string;
+  is_active?: boolean;
 }
