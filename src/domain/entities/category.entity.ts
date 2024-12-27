@@ -1,8 +1,11 @@
 import { EntityBase } from "../../../@shared/domain/entity/entity-base";
+import { EntityValidationError } from "../../../@shared/domain/validators/validators.error";
+import Uuid from "../../../@shared/domain/value-objects/uuid.vo";
 import { ICategory } from "../contracts/entities/category";
+import { CategoryValidatorFactory } from "./category.validator";
 
 export type CategoryConstructorProps = {
-  id?: string;
+  id?: Uuid;
   name: string;
   description?: string | null;
   is_active?: boolean;
@@ -10,14 +13,13 @@ export type CategoryConstructorProps = {
 };
 
 export type CategoryCreateCommand = {
-  id: string;
   name: string;
   description?: string;
   is_active?: boolean;
 };
 
 export class Category extends EntityBase implements ICategory {
-  id: string;
+  id: Uuid;
   name: string;
   description?: string | null;
   is_active?: boolean;
@@ -25,24 +27,33 @@ export class Category extends EntityBase implements ICategory {
 
   constructor(props: ICategory) {
     super();
+    this.id = props.id ?? new Uuid();
+    this.name = props.name;
+    this.description = props.description ?? null;
+    this.is_active = props.is_active ?? true;
+    this.created_at = props.created_at ?? new Date();
+
     Object.assign(this, props);
   }
 
-  get entity_id(): string {
+  get entity_id(): Uuid {
     return this.id;
   }
 
   static create(props: CategoryCreateCommand): Category {
     const category = new Category(props);
+    Category.validate(category)
     return category;
   }
 
   changeName(name: string): void {
     this.name = name;
+    Category.validate(this)
   }
 
   changeDescription(description: string | null): void {
     this.description = description;
+    Category.validate(this)
   }
 
   activate() {
@@ -61,5 +72,13 @@ export class Category extends EntityBase implements ICategory {
       is_active: this.is_active,
       created_at: this.created_at,
     };
+  }
+
+  static validate(entity: Category){
+    const validator = CategoryValidatorFactory.create(entity)
+    const isValid = validator.validate(entity)
+    if (!isValid){
+      throw new EntityValidationError(validator.errors)
+    }
   }
 }
