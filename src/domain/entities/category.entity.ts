@@ -1,6 +1,7 @@
-import { EntityBase } from "../../../@shared/domain/entity/entity-base";
-import { EntityValidationError } from "../../../@shared/domain/validators/validators.error";
-import Uuid from "../../../@shared/domain/value-objects/uuid.vo";
+
+import { EntityBase } from "../../../@shared/src/domain/models/entities/entity-base";
+import { EntityValidationError } from "../../../@shared/src/domain/validators/validators.error";
+import Uuid from "../../../@shared/src/domain/value-objects/uuid.vo";
 import { ICategory } from "../contracts/entities/category";
 import { CategoryValidatorFactory } from "./category.validator";
 

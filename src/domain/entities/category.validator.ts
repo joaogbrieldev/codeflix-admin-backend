@@ -5,7 +5,7 @@ import {
   IsString,
   MaxLength,
 } from "class-validator";
-import { ClassValidatorFields } from "../../../@shared/domain/validators/class-validators-fields";
+import { ClassValidatorFields } from "../../../@shared/src/domain/validators/class-validators-fields";
 import { Category } from "./category.entity";
 
 export class CategoryRules {
