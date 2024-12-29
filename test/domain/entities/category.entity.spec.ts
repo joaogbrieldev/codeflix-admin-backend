@@ -1,4 +1,4 @@
-import Uuid from "../../../@shared/domain/value-objects/uuid.vo";
+import Uuid from "../../../@shared/src/domain/value-objects/uuid.vo";
 import { Category } from "../../../src/domain/entities/category.entity";
 
 describe("CategotyEntity", () => {
@@ -81,11 +81,3 @@ describe("CategotyEntity", () => {
     });
   });
 });
-
-describe("categoryValidator" , () => {
-  test("create command" , () => {
-    const category = Category.create({
-      name: ""
-    })
-  })
-})

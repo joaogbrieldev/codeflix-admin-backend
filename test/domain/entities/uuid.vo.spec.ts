@@ -1,6 +1,6 @@
 import Uuid, {
   InvalidUuidError,
-} from "../../../@shared/domain/value-objects/uuid.vo";
+} from "../../../@shared/src/domain/value-objects/uuid.vo";
 
 describe("UuidVo", () => {
   test("should throw error when uuid is invalid", () => {
