@@ -1,9 +1,9 @@
 import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
+    IsBoolean,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    MaxLength,
 } from "class-validator";
 import { ClassValidatorFields } from "../../../@shared/src/domain/validators/class-validators-fields";
 import { Category } from "./category.entity";
