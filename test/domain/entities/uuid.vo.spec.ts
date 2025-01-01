@@ -1,5 +1,5 @@
 import Uuid, {
-  InvalidUuidError,
+    InvalidUuidError,
 } from "../../../@shared/src/domain/value-objects/uuid.vo";
 
 describe("UuidVo", () => {
