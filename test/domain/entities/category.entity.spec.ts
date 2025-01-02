@@ -76,7 +76,7 @@ describe("CategotyEntity", () => {
       id: category.id,
       name: "Fic",
       is_active: true,
-      created_at:category.created_at,
+      created_at: category.created_at,
       description: null,
     });
   });
