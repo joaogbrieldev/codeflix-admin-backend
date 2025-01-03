@@ -1,4 +1,5 @@
-import Uuid from "../../value-objects/uuid.vo";
+import { Uuid } from "../../value-objects/uuid.vo";
+
 
 export default interface IEntityBase {
   id?: Uuid;
