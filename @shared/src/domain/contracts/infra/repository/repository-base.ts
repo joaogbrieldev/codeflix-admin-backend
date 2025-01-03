@@ -1,4 +1,5 @@
-import ValueObject from "../../../value-objects/value-object";
+
+import { ValueObject } from "../../../value-objects/value-object";
 import IEntityBase from "../../entity/entity-base";
 
 export default abstract class IRepositoryBase<
