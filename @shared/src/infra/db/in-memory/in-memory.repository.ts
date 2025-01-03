@@ -1,11 +1,11 @@
 import IEntityBase from "../../../domain/contracts/entity/entity-base";
 import IRepositoryBase from "../../../domain/contracts/infra/repository/repository-base";
 import { NotFoundError } from "../../../domain/errors/not-found.error";
-import { ValueObject } from "../../../domain/value-objects/value-object";
+import { Uuid } from "../../../domain/value-objects/uuid.vo";
 
 export abstract class InMemoryRepository<
   DomainModel extends IEntityBase,
-  EntityId extends ValueObject
+  EntityId extends Uuid
 > extends IRepositoryBase<DomainModel, EntityId> {
   model: DomainModel[] = [];
 
