@@ -1,7 +1,7 @@
-
 import { EntityBase } from "../../../@shared/src/domain/models/entities/entity-base";
 import { EntityValidationError } from "../../../@shared/src/domain/validators/validators.error";
-import Uuid from "../../../@shared/src/domain/value-objects/uuid.vo";
+import { Uuid } from "../../../@shared/src/domain/value-objects/uuid.vo";
+
 import { ICategory } from "../contracts/entities/category";
 import { CategoryValidatorFactory } from "./category.validator";
 
@@ -43,18 +43,18 @@ export class Category extends EntityBase implements ICategory {
 
   static create(props: CategoryCreateCommand): Category {
     const category = new Category(props);
-    Category.validate(category)
+    Category.validate(category);
     return category;
   }
 
   changeName(name: string): void {
     this.name = name;
-    Category.validate(this)
+    Category.validate(this);
   }
 
   changeDescription(description: string | null): void {
     this.description = description;
-    Category.validate(this)
+    Category.validate(this);
   }
 
   activate() {
@@ -75,11 +75,11 @@ export class Category extends EntityBase implements ICategory {
     };
   }
 
-  static validate(entity: Category){
-    const validator = CategoryValidatorFactory.create(entity)
-    const isValid = validator.validate(entity)
-    if (!isValid){
-      throw new EntityValidationError(validator.errors)
+  static validate(entity: Category) {
+    const validator = CategoryValidatorFactory.create(entity);
+    const isValid = validator.validate(entity);
+    if (!isValid) {
+      throw new EntityValidationError(validator.errors);
     }
   }
 }

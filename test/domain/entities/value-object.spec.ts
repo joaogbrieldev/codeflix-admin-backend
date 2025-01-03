@@ -1,4 +1,4 @@
-import ValueObject from "../../../@shared/src/domain/value-objects/value-object";
+import { ValueObject } from "../../../@shared/src/domain/value-objects/value-object";
 
 describe("ValeuObject", () => {
   test("Should be verify if vo is null or undefined", () => {
