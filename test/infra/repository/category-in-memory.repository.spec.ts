@@ -1,7 +1,9 @@
 import { Category } from "../../../src/domain/entities/category.entity";
 import { CategoryInMemoryRepository } from "../../../src/infra/repository/category/category-in-memory.repository";
+import { CategoryFakeBuilder } from "../../fake-builders/category.fake-builder";
 
 describe("CategoryInMemoryRepository", () => {
+  const category = CategoryFakeBuilder.aCategory().build();
   let repository: CategoryInMemoryRepository;
 
   beforeEach(() => {
@@ -9,15 +11,15 @@ describe("CategoryInMemoryRepository", () => {
   });
 
   test("should no filter items when filter object is null", async () => {
-    const items = [Category.create({ name: "Item 1" })];
+    const items = [category];
     const filterSpy = jest.spyOn(items, "filter" as any);
     const itemsFiltered = await repository["applyFilter"](items, null);
     expect(filterSpy).not.toHaveBeenCalled();
     expect(itemsFiltered).toStrictEqual(items);
   });
-
-  test("should filter items when filter object is not null", async () => {
-    const items = [Category.create({ name: "Item 1" })];
+  test("should filter item when filter object is not null", async () => {
+    const category = CategoryFakeBuilder.aCategory().withName("Item 1").build();
+    const items = [category];
     const filterSpy = jest.spyOn(items, "filter" as any);
     const itemsFiltered = await repository["applyFilter"](items, "Item 1");
     expect(filterSpy).toHaveBeenCalledTimes(1);
