@@ -3,5 +3,6 @@ import { ICategoryRepository } from "../../../domain/contracts/repositories/cate
 import { Category } from "../../../domain/entities/category.entity";
 import { PostgresRepositoryAdapter } from "../../db/postgres/base-repository-postgres-db.adapter";
 
-export class CategoryRepository extends PostgresRepositoryAdapter<Category, ValueObject> implements ICategoryRepository {
-}
+export class CategoryRepository
+  extends PostgresRepositoryAdapter<Category, ValueObject>
+  implements ICategoryRepository {}
