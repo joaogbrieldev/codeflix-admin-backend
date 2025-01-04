@@ -1,13 +1,19 @@
 import IEntityBase from "../../../domain/contracts/entity/entity-base";
-import IRepositoryBase from "../../../domain/contracts/infra/repository/repository-base";
+import IRepositoryBase, {
+  ISearchableRepository,
+} from "../../../domain/contracts/infra/repository/repository-base";
+import {
+  SearchParams,
+  SortDirection,
+} from "../../../domain/contracts/infra/repository/search-params";
+import { SearchResult } from "../../../domain/contracts/infra/repository/search-result";
 import { NotFoundError } from "../../../domain/errors/not-found.error";
 import { EntityBase } from "../../../domain/models/entities/entity-base";
 import { Uuid } from "../../../domain/value-objects/uuid.vo";
-import { ValueObject } from "../../../domain/value-objects/value-object";
 
 export abstract class InMemoryRepository<
   DomainModel extends IEntityBase,
-  EntityId extends ValueObject
+  EntityId extends Uuid
 > extends IRepositoryBase<DomainModel, EntityId> {
   model: DomainModel[] = [];
 

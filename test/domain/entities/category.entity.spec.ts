@@ -1,4 +1,4 @@
-import Uuid from "../../../@shared/src/domain/value-objects/uuid.vo";
+import { Uuid } from "../../../@shared/src/domain/value-objects/uuid.vo";
 import { Category } from "../../../src/domain/entities/category.entity";
 
 describe("CategotyEntity", () => {
