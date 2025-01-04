@@ -34,8 +34,6 @@ export class Category extends EntityBase implements ICategory {
     this.description = props.description ?? null;
     this.is_active = props.is_active ?? true;
     this.created_at = props.created_at ?? new Date();
-
-    Object.assign(this, props);
   }
 
   get entity_id(): Uuid {
