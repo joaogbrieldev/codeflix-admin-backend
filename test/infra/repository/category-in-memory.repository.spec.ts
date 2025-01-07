@@ -40,7 +40,7 @@ describe("CategoryInMemoryRepository", () => {
   test("should filter items when filter object is null and return first to new Date", async () => {
     const created_at = new Date();
     const items = [
-      Category.create({ name: "Item 1", created_at }),
+      Category.create({ name: "Item 1" }),
       Category.create({
         name: "Item 1",
         created_at: new Date(created_at.getTime() + 100),

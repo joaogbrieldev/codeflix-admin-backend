@@ -1,4 +1,3 @@
-import IEntityBase from "../../../domain/contracts/entity/entity-base";
 import IRepositoryBase, {
   ISearchableRepository,
 } from "../../../domain/contracts/infra/repository/repository-base";
@@ -9,84 +8,122 @@ import {
 import { SearchResult } from "../../../domain/contracts/infra/repository/search-result";
 import { NotFoundError } from "../../../domain/errors/not-found.error";
 import { EntityBase } from "../../../domain/models/entities/entity-base";
-import { Uuid } from "../../../domain/value-objects/uuid.vo";
+import { ValueObject } from "../../../domain/value-objects/value-object";
 
 export abstract class InMemoryRepository<
-  DomainModel extends IEntityBase,
-  EntityId extends Uuid
-> extends IRepositoryBase<DomainModel, EntityId> {
-  model: DomainModel[] = [];
+  E extends EntityBase,
+  EntityId extends ValueObject
+> implements IRepositoryBase<E, EntityId>
+{
+  model: E[] = [];
 
-  async create(entity: DomainModel): Promise<void> {
+  async create(entity: E): Promise<void> {
     this.model.push(entity);
   }
-  async update(entity: DomainModel): Promise<void> {
+
+  async update(entity: E): Promise<void> {
     const indexFound = this.model.findIndex((item) =>
-      item.id.equals(entity.id)
+      item.entity_id.equals(entity.entity_id)
     );
     if (indexFound === -1) {
-      throw new NotFoundError(entity.id, this.getEntity());
+      throw new NotFoundError(entity.entity_id, this.getEntity());
     }
     this.model[indexFound] = entity;
   }
-  async delete(id: EntityId): Promise<void> {
-    const indexFound = this.model.findIndex((item) => item.id.equals(id));
+
+  async delete(entity_id: EntityId): Promise<void> {
+    const indexFound = this.model.findIndex((item) =>
+      item.entity_id.equals(entity_id)
+    );
     if (indexFound === -1) {
-      throw new NotFoundError(id, this.getEntity());
+      throw new NotFoundError(entity_id, this.getEntity());
     }
     this.model.splice(indexFound, 1);
   }
-  async findById(id: EntityId): Promise<DomainModel | null> {
-    return this._get(id);
-  }
-  async getAll(): Promise<DomainModel[]> {
-    return this.model;
-  }
 
-  protected _get(id: EntityId) {
-    const item = this.model.find((item) => item.id.equals(id));
+  async findById(entity_id: EntityId): Promise<E | null> {
+    const item = this.model.find((item) => item.entity_id.equals(entity_id));
     return typeof item === "undefined" ? null : item;
   }
 
-  abstract getEntity(): new (...args: any[]) => DomainModel;
+  async getAll(): Promise<any[]> {
+    return this.model;
+  }
+
+  async findByIds(ids: EntityId[]): Promise<E[]> {
+    //avoid to return repeated items
+    return this.model.filter((entity) => {
+      return ids.some((id) => entity.entity_id.equals(id));
+    });
+  }
+
+  async existsById(
+    ids: EntityId[]
+  ): Promise<{ exists: EntityId[]; not_exists: EntityId[] }> {
+    if (this.model.length === 0) {
+      return {
+        exists: [],
+        not_exists: ids,
+      };
+    }
+
+    const existsId = new Set<EntityId>();
+    const notExistsId = new Set<EntityId>();
+    ids.forEach((id) => {
+      const item = this.model.find((entity) => entity.entity_id.equals(id));
+      item ? existsId.add(id) : notExistsId.add(id);
+    });
+    return {
+      exists: Array.from(existsId.values()),
+      not_exists: Array.from(notExistsId.values()),
+    };
+  }
+
+  abstract getEntity(): new (...args: any[]) => E;
 }
 
 export abstract class InMemorySearchableRepository<
-    DomainModel extends IEntityBase,
-    EntityId extends Uuid,
+    E extends EntityBase,
+    EntityId extends ValueObject,
     Filter = string
   >
-  extends InMemoryRepository<DomainModel, EntityId>
-  implements ISearchableRepository<DomainModel, EntityId, Filter>
+  extends InMemoryRepository<E, EntityId>
+  implements ISearchableRepository<E, EntityId, Filter>
 {
+  create(entity: E): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  getAll(): Promise<E[]> {
+    throw new Error("Method not implemented.");
+  }
   sortableFields: string[] = [];
-  async search(props: SearchParams<Filter>): Promise<SearchResult<EntityBase>> {
-    const itemsFiltered = await this.applyFilter(this.model, props.filter);
+  async search(props: SearchParams<Filter>): Promise<SearchResult<E>> {
+    const modelFiltered = await this.applyFilter(this.model, props.filter);
     const itemsSorted = this.applySort(
-      itemsFiltered,
+      modelFiltered,
       props.sort,
       props.sort_dir
     );
-    const itemsPaginate = this.applyPaginate(
+    const itemsPaginated = this.applyPaginate(
       itemsSorted,
       props.page,
       props.per_page
     );
     return new SearchResult({
-      items: itemsPaginate,
-      total: itemsFiltered.length,
+      items: itemsPaginated,
+      total: modelFiltered.length,
       current_page: props.page,
       per_page: props.per_page,
     });
   }
 
   protected abstract applyFilter(
-    items: EntityBase[],
+    items: E[],
     filter: Filter | null
-  ): Promise<EntityBase[]>;
+  ): Promise<E[]>;
 
   protected applyPaginate(
-    items: EntityBase[],
+    items: E[],
     page: SearchParams["page"],
     per_page: SearchParams["per_page"]
   ) {
@@ -96,10 +133,10 @@ export abstract class InMemorySearchableRepository<
   }
 
   protected applySort(
-    items: EntityBase[],
+    items: E[],
     sort: string | null,
     sort_dir: SortDirection | null,
-    custom_getter?: (sort: string, item: EntityBase) => any
+    custom_getter?: (sort: string, item: E) => any
   ) {
     if (!sort || !this.sortableFields.includes(sort)) {
       return items;
