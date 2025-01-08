@@ -1,8 +1,19 @@
-import IRepositoryBase from "../../../../@shared/src/domain/contracts/infra/repository/repository-base";
-import { ValueObject } from "../../../../@shared/src/domain/value-objects/value-object";
-import { Category } from "../../entities/category.entity";
+import { ISearchableRepository } from "../../../../@shared/src/domain/contracts/infra/repository/repository-base";
+import { SearchParams } from "../../../../@shared/src/domain/contracts/infra/repository/search-params";
+import { SearchResult } from "../../../../@shared/src/domain/contracts/infra/repository/search-result";
+import { Category, CategoryId } from "../../entities/category.entity";
 
-export abstract class ICategoryRepository extends IRepositoryBase<
-  Category  ,
-  ValueObject  
-> {}
+export type CategoryFilter = string;
+
+export class CategorySearchParams extends SearchParams<CategoryFilter> {}
+
+export class CategorySearchResult extends SearchResult<Category> {}
+
+export interface ICategoryRepository
+  extends ISearchableRepository<
+    Category,
+    CategoryId,
+    CategoryFilter,
+    CategorySearchParams,
+    CategorySearchResult
+  > {}
