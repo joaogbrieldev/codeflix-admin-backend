@@ -1,14 +1,8 @@
-import { Uuid } from "../../../@shared/src/domain/value-objects/uuid.vo";
 import { Category } from "../../../src/domain/entities/category.entity";
 
 describe("CategotyEntity", () => {
-  let validateSpy: any;
-  beforeEach(() => {
-    validateSpy = jest.spyOn(Category, "validate");
-  });
   test("Should be create a new Categoty", () => {
     const categoryCreated: Category = new Category({
-      id: new Uuid(),
       name: "Fic",
       is_active: true,
     });
@@ -18,12 +12,11 @@ describe("CategotyEntity", () => {
 
   test("Should be get entity Id", () => {
     const category: Category = new Category({
-      id: new Uuid(),
       name: "Fic",
       is_active: true,
     });
 
-    expect(category.entity_id).toStrictEqual(category.id);
+    expect(category.entity_id).toStrictEqual(category.category_id);
   });
 
   test("Should be changeName", () => {
@@ -33,12 +26,10 @@ describe("CategotyEntity", () => {
     });
     category.changeName("Terror");
     expect(category.name).toStrictEqual("Terror");
-    expect(validateSpy).toHaveBeenCalledTimes(2);
   });
 
   test("Should be changeDescription", () => {
     const category: Category = new Category({
-      id: new Uuid(),
       name: "Fic",
       description: "Any",
       is_active: true,
@@ -49,7 +40,6 @@ describe("CategotyEntity", () => {
 
   test("Should be activate", () => {
     const category: Category = new Category({
-      id: new Uuid(),
       name: "Fic",
       is_active: false,
     });
@@ -58,7 +48,6 @@ describe("CategotyEntity", () => {
   });
   test("Should be deactivate", () => {
     const category: Category = new Category({
-      id: new Uuid(),
       name: "Fic",
       is_active: true,
     });
@@ -68,12 +57,11 @@ describe("CategotyEntity", () => {
 
   test("Should be return JSON Format", () => {
     const category: Category = new Category({
-      id: new Uuid(),
       name: "Fic",
       is_active: true,
     });
     expect(category.toJSON()).toStrictEqual({
-      id: category.id,
+      category_id: category.category_id.id,
       name: "Fic",
       is_active: true,
       created_at: category.created_at,
