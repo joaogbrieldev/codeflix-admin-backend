@@ -1,12 +1,11 @@
 import { Chance } from "chance";
-import { Uuid } from "../../@shared/src/domain/value-objects/uuid.vo";
-import { Category } from "../../src/domain/entities/category.entity";
+import { Category, CategoryId } from "src/domain/entities/category.entity";
 
 type PropOrFactory<T> = T | ((index: number) => T);
 
 export class CategoryFakeBuilder<TBuild = any> {
-  // auto generated in entity
-  private _category_id: PropOrFactory<Uuid> | undefined = undefined;
+  // auto generated in entit
+  private _category_id: PropOrFactory<CategoryId> | undefined = undefined;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private _name: PropOrFactory<string> = (_index) => this.chance.word();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -34,7 +33,7 @@ export class CategoryFakeBuilder<TBuild = any> {
     this.chance = Chance();
   }
 
-  withUuid(valueOrFactory: PropOrFactory<Uuid>) {
+  withCategoryId(valueOrFactory: PropOrFactory<CategoryId>) {
     this._category_id = valueOrFactory;
     return this;
   }
@@ -74,7 +73,7 @@ export class CategoryFakeBuilder<TBuild = any> {
       .fill(undefined)
       .map((_, index) => {
         const category = new Category({
-          id: !this._category_id
+          category_id: !this._category_id
             ? undefined
             : this.callFactory(this._category_id, index),
           name: this.callFactory(this._name, index),
@@ -83,8 +82,6 @@ export class CategoryFakeBuilder<TBuild = any> {
           ...(this._created_at && {
             created_at: this.callFactory(this._created_at, index),
           }),
-          entity_id: null,
-          toJSON() {},
         });
         return category;
       });
