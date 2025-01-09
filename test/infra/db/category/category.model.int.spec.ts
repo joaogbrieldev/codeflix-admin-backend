@@ -1,6 +1,6 @@
-import { setupSequelize } from "@shared/src/infra/test/helpers";
 import { DataType } from "sequelize-typescript";
-import { CategoryModel } from "src/infra/db/postgres/category/category.model";
+import { setupSequelize } from "../../../../@shared/src/infra/test/helpers";
+import { CategoryModel } from "../../../../src/infra/db/postgres/category/category.model";
 
 describe("CategoryModel Integration Tests", () => {
   setupSequelize({ models: [CategoryModel] });
