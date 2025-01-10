@@ -7,7 +7,12 @@ export class CreateCategoryUseCase implements ICreateCategoryUseCase {
   async execute(input: ICreateCategoryInput): Promise<ICreateCategoryOutput> {
     const entity = Category.create(input);
     await this._categoryRepository.create(entity);  
-    return entity;
+    return {
+      id: entity.category_id.id,
+      name: entity.name,
+      description: entity.description,
+      is_active: entity.is_active,
+      created_at: entity.created_at
+    };
   }
 } 
- 
