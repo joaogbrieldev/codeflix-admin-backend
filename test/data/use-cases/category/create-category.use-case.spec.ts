@@ -19,7 +19,7 @@ describe("CreateCategoryUseCase Integration Test", () => {
     jest.spyOn(repository, "create");
     const input = CategoryFakeBuilder.aCategory().build();
     const execute = await usecase.execute(input);
-    const entity = await repository.findById(new Uuid(execute.id));
+    const entity = await repository.findById(new Uuid(input.category_id.id));
     expect(execute).toStrictEqual({
       id: entity?.category_id.id,
       name: entity?.name,
