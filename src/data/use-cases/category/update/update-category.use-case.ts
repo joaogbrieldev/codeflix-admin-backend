@@ -2,14 +2,14 @@ import { NotFoundError } from "@shared/src/domain/errors/not-found.error";
 import { ICategoryRepository } from "src/domain/contracts/repositories/category.repository";
 import {
   IUpdateCategoryInput,
-  IUpdateCategoryOutput,
   IUpdateCategoryUseCase,
 } from "src/domain/contracts/use-cases/category/update/update-category";
 import { Category, CategoryId } from "src/domain/entities/category.entity";
+import { CategoryOutputMapper } from "../common/category-output";
 
 export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
   constructor(private readonly _categoryRepository: ICategoryRepository) {}
-  async execute(input: IUpdateCategoryInput): Promise<IUpdateCategoryOutput> {
+  async execute(input: IUpdateCategoryInput): Promise<CategoryOutputMapper> {
     const categoryId = new CategoryId(input.id);
     const category = await this._categoryRepository.findById(categoryId);
     if (!category) {
@@ -31,12 +31,6 @@ export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
 
     await this._categoryRepository.update(category);
 
-    return {
-      id: category.category_id,
-      name: category.name,
-      description: category.description || null,
-      is_active: category.is_active,
-      created_at: category.created_at,
-    };
+    return CategoryOutputMapper.toOutput(category);
   }
 }

@@ -33,7 +33,7 @@ describe("UpdateCategoryUseCase Integration Tests", () => {
       name: categoryUpdated.name,
     });
     expect(execute).toStrictEqual({
-      id: category.category_id,
+      id: category.category_id.id,
       name: category.name,
       description: category.description,
       is_active: category.is_active,
