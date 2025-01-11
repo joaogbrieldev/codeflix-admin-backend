@@ -1,5 +1,5 @@
 import { IUseCase } from "@shared/src/domain/use-cases/use-case";
-import { CategoryId } from "src/domain/entities/category.entity";
+import { CategoryOutputMapper } from "src/data/use-cases/category/common/category-output";
 
 export type IUpdateCategoryInput = {
   id: string;
@@ -8,16 +8,8 @@ export type IUpdateCategoryInput = {
   is_active?: boolean;
 };
 
-export type IUpdateCategoryOutput = {
-  id: CategoryId;
-  name: string;
-  description: string | null;
-  is_active: boolean;
-  created_at: Date;
-};
-
 export abstract class IUpdateCategoryUseCase
-  implements IUseCase<IUpdateCategoryInput, IUpdateCategoryOutput>
+  implements IUseCase<IUpdateCategoryInput, CategoryOutputMapper>
 {
-  abstract execute(input: IUpdateCategoryInput): Promise<IUpdateCategoryOutput>;
+  abstract execute(input: IUpdateCategoryInput): Promise<CategoryOutputMapper>;
 }
