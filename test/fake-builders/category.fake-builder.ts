@@ -1,5 +1,6 @@
 import { Chance } from "chance";
-import { Category, CategoryId } from "src/domain/entities/category.entity";
+import { Category, CategoryId } from "src/core/domain/entities/category.entity";
+
 
 type PropOrFactory<T> = T | ((index: number) => T);
 

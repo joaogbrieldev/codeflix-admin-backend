@@ -1,9 +1,10 @@
 import { NotFoundError } from "@shared/src/domain/errors/not-found.error";
 import { setupSequelize } from "@shared/src/infra/test/helpers";
-import { DeleteCategoryUseCase } from "src/data/use-cases/category/delete/delete-category.use-case";
-import { Category, CategoryId } from "src/domain/entities/category.entity";
-import { CategoryModel } from "src/infra/db/postgres/category/category.model";
-import { CategorySequelizeRepository } from "src/infra/repository/category/category.repository";
+import { DeleteCategoryUseCase } from "src/core/category/delete/delete-category.use-case";
+import { Category, CategoryId } from "src/core/domain/entities/category.entity";
+import { CategoryModel } from "src/core/infra/db/postgres/category/category.model";
+import { CategorySequelizeRepository } from "src/core/infra/repository/category/category.repository";
+
 import { CategoryFakeBuilder } from "test/fake-builders/category.fake-builder";
 
 describe("DeleteCategoryUseCase Integration Tests", () => {
