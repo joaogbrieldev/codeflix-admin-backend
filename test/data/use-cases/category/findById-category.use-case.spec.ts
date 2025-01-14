@@ -1,9 +1,10 @@
 import { NotFoundError } from "@shared/src/domain/errors/not-found.error";
 import { setupSequelize } from "@shared/src/infra/test/helpers";
-import { FindByIdCategoryUseCase } from "src/data/use-cases/category/findById/findById-category.use-case";
-import { Category, CategoryId } from "src/domain/entities/category.entity";
-import { CategoryModel } from "src/infra/db/postgres/category/category.model";
-import { CategorySequelizeRepository } from "src/infra/repository/category/category.repository";
+import { FindByIdCategoryUseCase } from "src/core/category/findById/findById-category.use-case";
+
+import { Category, CategoryId } from "src/core/domain/entities/category.entity";
+import { CategoryModel } from "src/core/infra/db/postgres/category/category.model";
+import { CategorySequelizeRepository } from "src/core/infra/repository/category/category.repository";
 import { CategoryFakeBuilder } from "test/fake-builders/category.fake-builder";
 
 describe("FindByIdCategoryUseCase Integration Tests", () => {

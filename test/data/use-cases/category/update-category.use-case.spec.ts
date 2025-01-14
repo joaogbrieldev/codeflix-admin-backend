@@ -1,9 +1,9 @@
 import { NotFoundError } from "@shared/src/domain/errors/not-found.error";
 import { setupSequelize } from "@shared/src/infra/test/helpers";
-import { UpdateCategoryUseCase } from "src/data/use-cases/category/Update/Update-category.use-case";
-import { Category, CategoryId } from "src/domain/entities/category.entity";
-import { CategoryModel } from "src/infra/db/postgres/category/category.model";
-import { CategorySequelizeRepository } from "src/infra/repository/category/category.repository";
+import { UpdateCategoryUseCase } from "src/core/category/update/update-category.use-case";
+import { Category, CategoryId } from "src/core/domain/entities/category.entity";
+import { CategoryModel } from "src/core/infra/db/postgres/category/category.model";
+import { CategorySequelizeRepository } from "src/core/infra/repository/category/category.repository";
 
 describe("UpdateCategoryUseCase Integration Tests", () => {
   let useCase: UpdateCategoryUseCase;
