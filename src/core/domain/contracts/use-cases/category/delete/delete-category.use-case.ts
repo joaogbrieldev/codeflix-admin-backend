@@ -1,4 +1,4 @@
-import { IUseCase } from "@shared/src/domain/use-cases/use-case";
+import { IUseCase } from '@shared/src/domain/use-cases/use-case';
 
 export type IDeleteCategoryInput = {
   id: string;

@@ -1,6 +1,5 @@
-import { EntityBase } from "../../../models/entities/entity-base";
-import { ValueObject } from "../../../value-objects/value-object";
-
+import { EntityBase } from '@shared/src/domain/models/entities/entity-base';
+import { ValueObject } from '@shared/src/domain/value-objects/value-object';
 
 type SearchResultConstructorProps<E extends EntityBase> = {
   items: E[];
@@ -9,7 +8,9 @@ type SearchResultConstructorProps<E extends EntityBase> = {
   per_page: number;
 };
 
-export class SearchResult<E extends EntityBase = EntityBase> extends ValueObject {
+export class SearchResult<
+  E extends EntityBase = EntityBase,
+> extends ValueObject {
   readonly items: E[];
   readonly total: number;
   readonly current_page: number;

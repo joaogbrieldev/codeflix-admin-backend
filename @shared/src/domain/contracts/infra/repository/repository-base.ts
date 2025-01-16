@@ -1,18 +1,15 @@
-
-import { EntityBase } from "../../../models/entities/entity-base";
-import { ValueObject } from "../../../value-objects/value-object";
-import IEntityBase from "../../entity/entity-base";
-import { SearchParams } from "./search-params";
-import { SearchResult } from "./search-result";
+import { EntityBase } from '@shared/src/domain/models/entities/entity-base';
+import { ValueObject } from '@shared/src/domain/value-objects/value-object';
+import IEntityBase from '../../entity/entity-base';
+import { SearchParams } from './search-params';
+import { SearchResult } from './search-result';
 
 export default abstract class IRepositoryBase<
   DomainModel extends IEntityBase,
-  EntityId extends ValueObject
+  EntityId extends ValueObject,
 > {
   abstract create(entity: DomainModel): Promise<void>;
-  abstract update(
-    entity: DomainModel
-  ): Promise<void>;
+  abstract update(entity: DomainModel): Promise<void>;
   abstract delete(id: EntityId): Promise<void>;
   abstract findById(id: EntityId): Promise<DomainModel | null>;
   abstract getAll(): Promise<DomainModel[]>;
