@@ -1,6 +1,5 @@
-import { IUseCase } from "@shared/src/domain/use-cases/use-case";
-import { CategoryOutputMapper } from "src/core/category/common/category-output";
-
+import { IUseCase } from 'src/@shared/src/domain/use-cases/use-case';
+import { CategoryOutputMapper } from 'src/core/category/common/category-output';
 
 export type IUpdateCategoryInput = {
   id: string;

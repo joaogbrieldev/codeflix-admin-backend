@@ -1,9 +1,12 @@
-import { NotFoundError } from "@shared/src/domain/errors/not-found.error";
+import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
 
-import { ICategoryRepository } from "src/core/domain/contracts/repositories/category.repository";
-import { IUpdateCategoryInput, IUpdateCategoryUseCase } from "src/core/domain/contracts/use-cases/category/update/update-category";
-import { Category, CategoryId } from "src/core/domain/entities/category.entity";
-import { CategoryOutputMapper } from "../common/category-output";
+import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
+import {
+  IUpdateCategoryInput,
+  IUpdateCategoryUseCase,
+} from 'src/core/domain/contracts/use-cases/category/update/update-category';
+import { Category, CategoryId } from 'src/core/domain/entities/category.entity';
+import { CategoryOutputMapper } from '../common/category-output';
 
 export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
   constructor(private readonly _categoryRepository: ICategoryRepository) {}
@@ -15,7 +18,7 @@ export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
     }
     input.name && category.changeName(input.name);
 
-    if ("description" in input) {
+    if ('description' in input) {
       category.changeDescription(input.description || null);
     }
 

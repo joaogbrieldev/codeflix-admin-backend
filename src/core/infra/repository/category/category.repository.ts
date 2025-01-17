@@ -1,16 +1,19 @@
-import { Op, literal } from "sequelize";
+import { Op, literal } from 'sequelize';
 
-import { SearchParams, SortDirection } from "@shared/src/domain/contracts/infra/repository/search-params";
-import { SearchResult } from "@shared/src/domain/contracts/infra/repository/search-result";
-import { NotFoundError } from "@shared/src/domain/errors/not-found.error";
-import { Uuid } from "@shared/src/domain/value-objects/uuid.vo";
-import { ICategoryRepository } from "../../../domain/contracts/repositories/category.repository";
-import { Category } from "../../../domain/entities/category.entity";
-import { CategoryModel } from "../../db/postgres/category/category.model";
-import { CategoryModelMapper } from "./category-model-mapper";
+import {
+  SearchParams,
+  SortDirection,
+} from 'src/@shared/src/domain/contracts/infra/repository/search-params';
+import { SearchResult } from 'src/@shared/src/domain/contracts/infra/repository/search-result';
+import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
+import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
+import { ICategoryRepository } from '../../../domain/contracts/repositories/category.repository';
+import { Category } from '../../../domain/entities/category.entity';
+import { CategoryModel } from '../../db/postgres/category/category.model';
+import { CategoryModelMapper } from './category-model-mapper';
 
 export class CategorySequelizeRepository implements ICategoryRepository {
-  sortableFields: string[] = ["name", "created_at"];
+  sortableFields: string[] = ['name', 'created_at'];
   orderBy = {
     mysql: {
       name: (sort_dir: SortDirection) => literal(`binary name ${sort_dir}`),
@@ -26,7 +29,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
 
   async bulkInsert(entities: Category[]): Promise<void> {
     const modelsProps = entities.map((entity) =>
-      CategoryModelMapper.toModel(entity).toJSON()
+      CategoryModelMapper.toModel(entity).toJSON(),
     );
     await this.categoryModel.bulkCreate(modelsProps);
   }
@@ -39,7 +42,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
       modelProps.toJSON(),
       {
         where: { category_id: entity.category_id.id },
-      }
+      },
     );
 
     if (affectedRows !== 1) {
@@ -71,14 +74,14 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   async existsById(
-    ids: Uuid[]
+    ids: Uuid[],
   ): Promise<{ exists: Uuid[]; not_exists: Uuid[] }> {
     if (!ids.length) {
-      throw new Error("ids must be an array with at least one element");
+      throw new Error('ids must be an array with at least one element');
     }
 
     const existsCategoryModels = await this.categoryModel.findAll({
-      attributes: ["category_id"],
+      attributes: ['category_id'],
       where: {
         category_id: {
           [Op.in]: ids.map((id) => id.id),
@@ -86,10 +89,10 @@ export class CategorySequelizeRepository implements ICategoryRepository {
       },
     });
     const existsCategoryIds = existsCategoryModels.map(
-      (m) => new Uuid(m.category_id)
+      (m) => new Uuid(m.category_id),
     );
     const notExistsCategoryIds = ids.filter(
-      (id) => !existsCategoryIds.some((e) => e.equals(id))
+      (id) => !existsCategoryIds.some((e) => e.equals(id)),
     );
     return {
       exists: existsCategoryIds,
@@ -122,7 +125,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
       ...(props.sort && this.sortableFields.includes(props.sort)
         ? //? { order: [[props.sort, props.sort_dir]] }
           { order: this.formatSort(props.sort, props.sort_dir!) }
-        : { order: [["created_at", "desc"]] }),
+        : { order: [['created_at', 'desc']] }),
       offset,
       limit,
     });
@@ -137,7 +140,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
   }
 
   private formatSort(sort: string, sort_dir: SortDirection) {
-    const dialect = this.categoryModel.sequelize!.getDialect() as "mysql";
+    const dialect = this.categoryModel.sequelize!.getDialect() as 'mysql';
     if (this.orderBy[dialect] && this.orderBy[dialect][sort]) {
       return this.orderBy[dialect][sort](sort_dir);
     }

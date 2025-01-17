@@ -1,5 +1,3 @@
-
-
 import type { Config } from 'jest';
 
 const config: Config = {
@@ -15,8 +13,8 @@ const config: Config = {
     '/node_modules/',
     '.interface.ts',
     '-interface.ts',
-    'shared/testing',
-    'shared-module/testing',
+    '@shared/testing',
+    '@shared-module/testing',
     'validator-rules.ts',
     '-fixture.ts',
     '.input.ts',
