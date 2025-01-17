@@ -1,5 +1,5 @@
-import { SortDirection } from '@shared/src/domain/contracts/infra/repository/search-params';
-import { InMemorySearchableRepository } from '@shared/src/infra/db/in-memory/in-memory.repository';
+import { SortDirection } from 'src/@shared/src/domain/contracts/infra/repository/search-params';
+import { InMemorySearchableRepository } from 'src/@shared/src/infra/db/in-memory/in-memory.repository';
 import {
   CategoryFilter,
   ICategoryRepository,

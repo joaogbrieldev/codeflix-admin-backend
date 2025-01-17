@@ -1,5 +1,5 @@
-import { Uuid } from '@shared/src/domain/value-objects/uuid.vo';
-import { setupSequelize } from '@shared/src/infra/test/helpers';
+import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
+import { setupSequelize } from 'src/@shared/src/infra/test/helpers';
 import { CreateCategoryUseCase } from 'src/core/category/create/create-category.use-case';
 import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
 import { ICreateCategoryUseCase } from 'src/core/domain/contracts/use-cases/category/create/create-category';

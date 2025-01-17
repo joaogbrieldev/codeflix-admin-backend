@@ -6,7 +6,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-import { ClassValidatorFields } from '@shared/src/domain/validators/class-validators-fields';
+import { ClassValidatorFields } from 'src/@shared/src/domain/validators/class-validators-fields';
 import { Category } from './category.entity';
 
 export class CategoryRules {

@@ -1,4 +1,4 @@
-import { setupSequelize } from '@shared/src/infra/test/helpers';
+import { setupSequelize } from 'src/@shared/src/infra/test/helpers';
 import { GetAllCategoryUseCase } from 'src/core/category/getAll/getAll-category.use-case';
 import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
 import { IGetAllCategoryUseCase } from 'src/core/domain/contracts/use-cases/category/getAll/getAll-category';

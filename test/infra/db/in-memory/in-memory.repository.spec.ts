@@ -1,7 +1,7 @@
-import { NotFoundError } from '../../../../@shared/src/domain/errors/not-found.error';
-import { EntityBase } from '../../../../@shared/src/domain/models/entities/entity-base';
-import { Uuid } from '../../../../@shared/src/domain/value-objects/uuid.vo';
-import { InMemoryRepository } from '../../../../@shared/src/infra/db/in-memory/in-memory.repository';
+import { NotFoundError } from '../../../../src/@shared/src/domain/errors/not-found.error';
+import { EntityBase } from '../../../../src/@shared/src/domain/models/entities/entity-base';
+import { Uuid } from '../../../../src/@shared/src/domain/value-objects/uuid.vo';
+import { InMemoryRepository } from '../../../../src/@shared/src/infra/db/in-memory/in-memory.repository';
 
 type StubEntityConstructor = {
   entity_id?: Uuid;

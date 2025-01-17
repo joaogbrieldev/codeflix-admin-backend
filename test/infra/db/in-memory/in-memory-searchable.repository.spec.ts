@@ -1,8 +1,8 @@
-import { SearchParams } from '../../../../@shared/src/domain/contracts/infra/repository/search-params';
-import { SearchResult } from '../../../../@shared/src/domain/contracts/infra/repository/search-result';
-import { EntityBase } from '../../../../@shared/src/domain/models/entities/entity-base';
-import { Uuid } from '../../../../@shared/src/domain/value-objects/uuid.vo';
-import { InMemorySearchableRepository } from '../../../../@shared/src/infra/db/in-memory/in-memory.repository';
+import { SearchParams } from '../../../../src/@shared/src/domain/contracts/infra/repository/search-params';
+import { SearchResult } from '../../../../src/@shared/src/domain/contracts/infra/repository/search-result';
+import { EntityBase } from '../../../../src/@shared/src/domain/models/entities/entity-base';
+import { Uuid } from '../../../../src/@shared/src/domain/value-objects/uuid.vo';
+import { InMemorySearchableRepository } from '../../../../src/@shared/src/infra/db/in-memory/in-memory.repository';
 
 type StubEntityConstructorProps = {
   entity_id?: Uuid;

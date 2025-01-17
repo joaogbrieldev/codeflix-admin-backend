@@ -3,10 +3,10 @@ import { Op, literal } from 'sequelize';
 import {
   SearchParams,
   SortDirection,
-} from '@shared/src/domain/contracts/infra/repository/search-params';
-import { SearchResult } from '@shared/src/domain/contracts/infra/repository/search-result';
-import { NotFoundError } from '@shared/src/domain/errors/not-found.error';
-import { Uuid } from '@shared/src/domain/value-objects/uuid.vo';
+} from 'src/@shared/src/domain/contracts/infra/repository/search-params';
+import { SearchResult } from 'src/@shared/src/domain/contracts/infra/repository/search-result';
+import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
+import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
 import { ICategoryRepository } from '../../../domain/contracts/repositories/category.repository';
 import { Category } from '../../../domain/entities/category.entity';
 import { CategoryModel } from '../../db/postgres/category/category.model';
