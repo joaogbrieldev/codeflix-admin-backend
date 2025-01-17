@@ -1,5 +1,5 @@
-import { Category, CategoryId } from "../../../domain/entities/category.entity";
-import { CategoryModel } from "../../db/postgres/category/category.model";
+import { Category, CategoryId } from '../../../domain/entities/category.entity';
+import { CategoryModel } from '../../db/postgres/category/category.model';
 
 export class CategoryModelMapper {
   static toModel(entity: Category): CategoryModel {

@@ -14,9 +14,7 @@
     "baseUrl": "./",
     "keepClassNames": true,
     "paths": {
-      "@core/*": [
-        "./src/core/*"
-      ]
+      "@core/*": ["./src/core/*", "./@shared/*"]
     }
   },
   "minify": false

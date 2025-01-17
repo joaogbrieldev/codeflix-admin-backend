@@ -1,4 +1,4 @@
-import IEntityBase from "@shared/src/domain/contracts/entity/entity-base";
+import IEntityBase from 'src/@shared/src/domain/contracts/entity/entity-base';
 
 export interface ICategory extends IEntityBase {
   name: string;
