@@ -2,7 +2,7 @@ import type { Config } from 'jest';
 
 const config: Config = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: 'test',
+  rootDir: 'src',
   testRegex: '.*\\..*spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': '@swc/jest',
@@ -29,7 +29,6 @@ const config: Config = {
     },
   },
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['/home/node/app/@shared/src/infra/test/helpers.ts'],
   coverageProvider: 'v8',
   clearMocks: true,
 };

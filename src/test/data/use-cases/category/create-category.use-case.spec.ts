@@ -6,7 +6,7 @@ import { ICreateCategoryUseCase } from 'src/core/domain/contracts/use-cases/cate
 import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
 import { CategorySequelizeRepository } from 'src/core/infra/repository/category/category.repository';
 
-import { CategoryFakeBuilder } from 'test/fake-builders/category.fake-builder';
+import { CategoryFakeBuilder } from 'src/test/fake-builders/category.fake-builder';
 
 describe('CreateCategoryUseCase Integration Test', () => {
   setupSequelize({ models: [CategoryModel] });

@@ -1,4 +1,4 @@
-import { SearchResult } from '../../../../../src/@shared/src/domain/contracts/infra/repository/search-result';
+import { SearchResult } from '../../../../../@shared/src/domain/contracts/infra/repository/search-result';
 
 describe('SearchResult Unit Tests', () => {
   test('constructor props', () => {
