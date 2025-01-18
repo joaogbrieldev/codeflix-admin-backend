@@ -1,4 +1,4 @@
-import { SearchParams } from '../../../../../src/@shared/src/domain/contracts/infra/repository/search-params';
+import { SearchParams } from '../../../../../@shared/src/domain/contracts/infra/repository/search-params';
 
 describe('SearchParams Unit Tests', () => {
   test.each([
