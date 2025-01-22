@@ -27,8 +27,8 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/sequelize": "^10.0.1",
     "@swc/cli": "^0.5.2",
-    "better-sqlite3": "^11.8.0",
     "chance": "^1.1.12",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "joi": "^17.13.3",
@@ -37,7 +37,6 @@
     "rxjs": "^7.8.1",
     "sequelize": "^6.37.5",
     "sequelize-typescript": "^2.1.6",
-    "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "uuid": "^11.0.3"
   },
