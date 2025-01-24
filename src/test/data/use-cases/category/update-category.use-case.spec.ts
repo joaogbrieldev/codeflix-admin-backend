@@ -1,6 +1,6 @@
 import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
 import { setupSequelize } from 'src/@shared/src/infra/test/helpers';
-import { UpdateCategoryUseCase } from 'src/core/data/use-cases/category/update/update-category.use-case';
+import { UpdateCategoryUseCase } from 'src/core/data/use-cases/category/update-category/update-category.use-case';
 import { Category, CategoryId } from 'src/core/domain/entities/category.entity';
 import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
 import { CategorySequelizeRepository } from 'src/core/infra/repository/category/category.repository';
