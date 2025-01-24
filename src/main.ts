@@ -1,5 +1,5 @@
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -9,6 +9,9 @@ async function bootstrap() {
       errorHttpStatusCode: 422
     })
   )
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
   await app.listen(process.env.PORT ?? 3000);
+  console.log('app running at port 3000')
 }
 bootstrap();

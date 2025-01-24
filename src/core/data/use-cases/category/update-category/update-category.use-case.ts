@@ -6,11 +6,11 @@ import {
   IUpdateCategoryUseCase,
 } from 'src/core/domain/contracts/use-cases/category/update/update-category';
 import { Category, CategoryId } from 'src/core/domain/entities/category.entity';
-import { CategoryOutputMapper } from '../common/category-output';
+import { CategoryOutput, CategoryOutputMapper } from '../common/category-output';
 
 export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
   constructor(private readonly _categoryRepository: ICategoryRepository) {}
-  async execute(input: IUpdateCategoryInput): Promise<CategoryOutputMapper> {
+  async execute(input: IUpdateCategoryInput): Promise<CategoryOutput> {
     const categoryId = new CategoryId(input.id);
     const category = await this._categoryRepository.findById(categoryId);
     if (!category) {

@@ -1,9 +1,9 @@
 import { getModelToken } from '@nestjs/sequelize';
-import { CreateCategoryUseCase } from 'src/core/data/use-cases/category/create/create-category.use-case';
-import { DeleteCategoryUseCase } from 'src/core/data/use-cases/category/delete/delete-category.use-case';
-import { FindByIdCategoryUseCase } from 'src/core/data/use-cases/category/findById/findById-category.use-case';
-import { GetAllCategoryUseCase } from 'src/core/data/use-cases/category/getAll/getAll-category.use-case';
-import { UpdateCategoryUseCase } from 'src/core/data/use-cases/category/update/update-category.use-case';
+import { CreateCategoryUseCase } from 'src/core/data/use-cases/category/create-category/create-category.use-case';
+import { DeleteCategoryUseCase } from 'src/core/data/use-cases/category/delete-category/delete-category.use-case';
+import { GetCategoryUseCase } from 'src/core/data/use-cases/category/get-category/get-category.use-case';
+import { ListCategoriesUseCase } from 'src/core/data/use-cases/category/list-categories/list-categories';
+import { UpdateCategoryUseCase } from 'src/core/data/use-cases/category/update-category/update-category.use-case';
 import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
 import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
 import { CategoryInMemoryRepository } from 'src/core/infra/repository/category/category-in-memory.repository';
@@ -43,16 +43,16 @@ export const USE_CASES = {
     inject: [REPOSITORIES.CATEGORY_REPOSITORY.provide],
   },
   LIST_CATEGORIES_USE_CASE: {
-    provide: GetAllCategoryUseCase,
+    provide: ListCategoriesUseCase,
     useFactory: (categoryRepo: ICategoryRepository) => {
-      return new GetAllCategoryUseCase(categoryRepo);
+      return new ListCategoriesUseCase(categoryRepo);
     },
     inject: [REPOSITORIES.CATEGORY_REPOSITORY.provide],
   },
   GET_CATEGORY_USE_CASE: {
-    provide: FindByIdCategoryUseCase,
+    provide: GetCategoryUseCase,
     useFactory: (categoryRepo: ICategoryRepository) => {
-      return new FindByIdCategoryUseCase(categoryRepo);
+      return new GetCategoryUseCase(categoryRepo);
     },
     inject: [REPOSITORIES.CATEGORY_REPOSITORY.provide],
   },

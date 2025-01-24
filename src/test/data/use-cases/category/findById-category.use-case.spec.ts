@@ -1,6 +1,6 @@
 import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
 import { setupSequelize } from 'src/@shared/src/infra/test/helpers';
-import { FindByIdCategoryUseCase } from 'src/core/data/use-cases/category/findById/findById-category.use-case';
+import { GetCategoryUseCase } from 'src/core/data/use-cases/category/get-category/get-category.use-case';
 
 import { Category, CategoryId } from 'src/core/domain/entities/category.entity';
 import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
@@ -8,14 +8,14 @@ import { CategorySequelizeRepository } from 'src/core/infra/repository/category/
 import { CategoryFakeBuilder } from 'src/test/fake-builders/category.fake-builder';
 
 describe('FindByIdCategoryUseCase8691 Integration Tests', () => {
-  let useCase: FindByIdCategoryUseCase;
+  let useCase: GetCategoryUseCase;
   let repository: CategorySequelizeRepository;
 
   setupSequelize({ models: [CategoryModel] });
 
   beforeEach(() => {
     repository = new CategorySequelizeRepository(CategoryModel);
-    useCase = new FindByIdCategoryUseCase(repository);
+    useCase = new GetCategoryUseCase(repository);
   });
 
   it('should throws error when entity not found', async () => {
