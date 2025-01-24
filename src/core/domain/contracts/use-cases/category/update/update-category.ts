@@ -1,5 +1,5 @@
 import { IUseCase } from 'src/@shared/src/domain/use-cases/use-case';
-import { CategoryOutputMapper } from 'src/core/category/common/category-output';
+import { CategoryOutput } from 'src/core/data/use-cases/category/common/category-output';
 
 export type IUpdateCategoryInput = {
   id: string;
@@ -9,7 +9,7 @@ export type IUpdateCategoryInput = {
 };
 
 export abstract class IUpdateCategoryUseCase
-  implements IUseCase<IUpdateCategoryInput, CategoryOutputMapper>
+  implements IUseCase<IUpdateCategoryInput, CategoryOutput>
 {
-  abstract execute(input: IUpdateCategoryInput): Promise<CategoryOutputMapper>;
+  abstract execute(input: IUpdateCategoryInput): Promise<CategoryOutput>;
 }
