@@ -33,7 +33,7 @@ import {
 import { CreateCategoryInputDto } from './dto/create-category.dto';
 import { SearchCategoriesDto } from './dto/search-categories.dto';
 
-@Controller('category')
+@Controller('categories')
 export class CategoriesController {
   @Inject(CreateCategoryUseCase)
   private _createCategoryUseCase: ICreateCategoryUseCase;
@@ -58,18 +58,18 @@ export class CategoriesController {
     return CategoriesController.serialize(output);
   }
 
-  @Get()
-  async search(@Query() searchParamsDto: SearchCategoriesDto) {
-    const output = await this._getAllCategories.execute(searchParamsDto);
-    return new CategoryCollectionPresenter(output);
-  }
-
   @Get(':id')
   async findOne(
     @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
   ) {
     const output = await this._findByIdCategoryUseCase.execute({ id });
     return CategoriesController.serialize(output);
+  }
+
+  @Get()
+  async search(@Query() searchParamsDto: SearchCategoriesDto) {
+    const output = await this._getAllCategories.execute(searchParamsDto);
+    return new CategoryCollectionPresenter(output);
   }
 
   @Patch(':id')
