@@ -7,7 +7,6 @@ import { Reflector } from '@nestjs/core';
 import { WrapperDataInterceptor } from './interceptors/wrapper-data/wrapper-data.interceptor';
 import { NotFoundFilter } from './shared-module/not-found/not-found.filter';
 
-
 export function applyGlobalConfig(app: INestApplication) {
   app.useGlobalPipes(
     new ValidationPipe({
@@ -19,7 +18,5 @@ export function applyGlobalConfig(app: INestApplication) {
     new WrapperDataInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
-  app.useGlobalFilters(
-    new NotFoundFilter(),
-  );
+  app.useGlobalFilters(new NotFoundFilter());
 }

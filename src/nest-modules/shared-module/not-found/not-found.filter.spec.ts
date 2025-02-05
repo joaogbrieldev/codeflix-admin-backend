@@ -5,7 +5,6 @@ import { EntityBase } from 'src/@shared/src/domain/models/entities/entity-base';
 import request from 'supertest';
 import { NotFoundFilter } from './not-found.filter';
 
-
 class StubEntity extends EntityBase {
   entity_id: any;
   toJSON(): Required<any> {

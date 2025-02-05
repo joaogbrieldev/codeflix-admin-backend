@@ -6,6 +6,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   applyGlobalConfig(app);
   await app.listen(process.env.PORT ?? 3000);
-  console.log('app running at port 3000')
+  console.log('app running at port 3000');
 }
 bootstrap();

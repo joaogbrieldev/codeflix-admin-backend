@@ -3,7 +3,6 @@ import { CategoryOutput } from 'src/core/data/use-cases/category/common/category
 import { ListCategoriesOutput } from 'src/core/domain/contracts/use-cases/category/list-categories/list-categories';
 import { CollectionPresenter } from '../shared-module/collection.presenter';
 
-
 export class CategoryPresenter {
   id: string;
   name: string;
@@ -26,7 +25,7 @@ export class CategoryCollectionPresenter extends CollectionPresenter {
 
   constructor(output: ListCategoriesOutput) {
     const { items, ...paginationProps } = output;
-    super(paginationProps)
+    super(paginationProps);
     this.data = items.map((i) => new CategoryPresenter(i));
   }
 }
