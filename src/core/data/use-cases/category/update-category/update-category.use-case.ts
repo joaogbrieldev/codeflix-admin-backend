@@ -6,7 +6,10 @@ import {
   IUpdateCategoryUseCase,
 } from 'src/core/domain/contracts/use-cases/category/update/update-category';
 import { Category, CategoryId } from 'src/core/domain/entities/category.entity';
-import { CategoryOutput, CategoryOutputMapper } from '../common/category-output';
+import {
+  CategoryOutput,
+  CategoryOutputMapper,
+} from '../common/category-output';
 
 export class UpdateCategoryUseCase implements IUpdateCategoryUseCase {
   constructor(private readonly _categoryRepository: ICategoryRepository) {}

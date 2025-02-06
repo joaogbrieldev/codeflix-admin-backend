@@ -4,13 +4,21 @@ import {
   ICreateCategoryUseCase,
 } from 'src/core/domain/contracts/use-cases/category/create/create-category';
 import { Category } from 'src/core/domain/entities/category.entity';
-import { CategoryOutput, CategoryOutputMapper } from '../common/category-output';
+import {
+  CategoryOutput,
+  CategoryOutputMapper,
+} from '../common/category-output';
 
 export class CreateCategoryUseCase implements ICreateCategoryUseCase {
   constructor(private readonly _categoryRepository: ICategoryRepository) {}
   async execute(input: ICreateCategoryInput): Promise<CategoryOutput> {
     const entity = Category.create(input);
-    await this._categoryRepository.create(entity);
+    try {
+      await this._categoryRepository.create(entity);
+    } catch (error) {
+      console.log(error);
+    }
+
     return CategoryOutputMapper.toOutput(entity);
   }
 }

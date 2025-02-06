@@ -1,15 +1,18 @@
-
 import { PaginationOutputMapper } from 'src/@shared/src/data/pagination-output';
-import { CategorySearchParams, CategorySearchResult, ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
-
-import { IListCategoriesUseCase, ListCategoriesInput, ListCategoriesOutput } from 'src/core/domain/contracts/use-cases/category/list-categories/list-categories';
 import {
-  CategoryOutputMapper
-} from '../common/category-output';
+  CategorySearchParams,
+  CategorySearchResult,
+  ICategoryRepository,
+} from 'src/core/domain/contracts/repositories/category.repository';
 
-export class ListCategoriesUseCase
-  implements IListCategoriesUseCase
-{
+import {
+  IListCategoriesUseCase,
+  ListCategoriesInput,
+  ListCategoriesOutput,
+} from 'src/core/domain/contracts/use-cases/category/list-categories/list-categories';
+import { CategoryOutputMapper } from '../common/category-output';
+
+export class ListCategoriesUseCase implements IListCategoriesUseCase {
   constructor(private categoryRepo: ICategoryRepository) {}
 
   async execute(input: ListCategoriesInput): Promise<ListCategoriesOutput> {
