@@ -1,4 +1,4 @@
-import { CategoryFakeBuilder } from "src/test/fake-builders/category.fake-builder";
+import { CategoryFakeBuilder } from 'src/test/fake-builders/category.fake-builder';
 
 const _keysInResponse = [
   'id',
@@ -16,8 +16,7 @@ export class CreateCategoryFixture {
   static keysInResponse = _keysInResponse;
 
   static arrangeForCreate() {
-    const faker = CategoryFakeBuilder
-      .aCategory()
+    const faker = CategoryFakeBuilder.aCategory()
       .withName('Movie')
       .withDescription('description test');
     return [
@@ -174,8 +173,7 @@ export class UpdateCategoryFixture {
   static keysInResponse = _keysInResponse;
 
   static arrangeForUpdate() {
-    const faker = CategoryFakeBuilder
-      .aCategory()
+    const faker = CategoryFakeBuilder.aCategory()
       .withName('Movie')
       .withDescription('description test');
     return [
@@ -266,8 +264,7 @@ export class UpdateCategoryFixture {
 
 export class ListCategoriesFixture {
   static arrangeIncrementedWithCreatedAt() {
-    const _entities = CategoryFakeBuilder
-      .theCategories(4)
+    const _entities = CategoryFakeBuilder.theCategories(4)
       .withName((i) => i + '')
       .withCreatedAt((i) => new Date(new Date().getTime() + i * 2000))
       .build();

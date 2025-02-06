@@ -12,28 +12,40 @@ const models = [CategoryModel];
   imports: [
     SequelizeModule.forRootAsync({
       useFactory: (configService: ConfigService<CONFIG_SCHEMA_TYPE>) => {
-        const dbVendor = configService.get('DB_VENDOR');
+        const dbVendor = configService.get<string>('DB_VENDOR');
+        const isLoggingEnabled =
+          configService.get<boolean>('DB_LOGGING') ?? false;
+        const autoLoadModels =
+          configService.get<boolean>('DB_AUTO_LOAD_MODELS') ?? false;
+
         if (dbVendor === 'sqlite') {
           return {
             dialect: 'sqlite',
-            host: configService.get('DB_HOST'),
+            storage: configService.get<string>('DB_HOST'), // Para SQLite, host é na verdade o caminho do arquivo
             models,
-            logging: configService.get('DB_LOGGING'),
-            autoLoadModels: configService.get('DB_AUTO_LOAD_MODELS'),
+            logging: isLoggingEnabled,
+            autoLoadModels,
           };
         }
 
         if (dbVendor === 'mysql') {
           return {
             dialect: 'mysql',
-            host: configService.get('DB_HOST'),
-            port: configService.get('DB_PORT'),
-            database: configService.get('DB_DATABASE'),
-            username: configService.get('DB_USERNAME'),
-            password: configService.get('DB_PASSWORD'),
+            host: configService.get<string>('DB_HOST'),
+            port: Number(configService.get<number>('DB_PORT')) || 3306, // Garante que seja um número
+            database: configService.get<string>('DB_DATABASE'),
+            username: configService.get<string>('DB_USERNAME'),
+            password: configService.get<string>('DB_PASSWORD'),
             models,
-            logging: configService.get('DB_LOGGING'),
-            autoLoadModels: configService.get('DB_AUTO_LOAD_MODELS'),
+            logging: isLoggingEnabled,
+            autoLoadModels,
+            synchronize: true, // Evita recriação de tabelas automaticamente
+            pool: {
+              max: 10, // Limita número máximo de conexões
+              min: 2, // Número mínimo de conexões
+              acquire: 30000, // Tempo máximo de espera para uma conexão
+              idle: 10000, // Tempo que uma conexão fica inativa antes de ser liberada
+            },
           };
         }
 
