@@ -13,12 +13,13 @@ const config: Config = {
     '/node_modules/',
     '.interface.ts',
     '-interface.ts',
-    '@shared/testing',
-    '@shared-module/testing',
+    'shared-module/testing',
+    '/src/@shared',
     'validator-rules.ts',
     '-fixture.ts',
     '.input.ts',
     '.d.ts',
+    '/src/core/domain',
   ],
   coverageThreshold: {
     global: {
