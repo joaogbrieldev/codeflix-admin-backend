@@ -3,7 +3,7 @@ import { InMemorySearchableRepository } from 'src/@shared/src/infra/db/in-memory
 import {
   CategoryFilter,
   ICategoryRepository,
-} from '../../../domain/contracts/repositories/category.repository';
+} from '../../../domain/contracts/repositories/category/category.repository';
 import { Category, CategoryId } from '../../../domain/entities/category.entity';
 
 export class CategoryInMemoryRepository
