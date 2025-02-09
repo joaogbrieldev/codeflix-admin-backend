@@ -1,5 +1,5 @@
 import { SortDirection } from 'src/@shared/src/domain/contracts/infra/repository/search-params';
-import { CategoryFilter } from 'src/core/domain/contracts/repositories/category.repository';
+import { CategoryFilter } from 'src/core/domain/contracts/repositories/category/category.repository';
 import { ListCategoriesInput } from 'src/core/domain/contracts/use-cases/category/list-categories/list-categories';
 
 export class SearchCategoriesDto implements ListCategoriesInput {
