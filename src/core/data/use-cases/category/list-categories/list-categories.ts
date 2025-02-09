@@ -1,10 +1,10 @@
 import { PaginationOutputMapper } from 'src/@shared/src/data/pagination-output';
+
 import {
   CategorySearchParams,
   CategorySearchResult,
   ICategoryRepository,
-} from 'src/core/domain/contracts/repositories/category.repository';
-
+} from 'src/core/domain/contracts/repositories/category/category.repository';
 import {
   IListCategoriesUseCase,
   ListCategoriesInput,

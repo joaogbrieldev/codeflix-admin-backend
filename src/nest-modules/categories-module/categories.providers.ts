@@ -4,7 +4,7 @@ import { DeleteCategoryUseCase } from 'src/core/data/use-cases/category/delete-c
 import { GetCategoryUseCase } from 'src/core/data/use-cases/category/get-category/get-category.use-case';
 import { ListCategoriesUseCase } from 'src/core/data/use-cases/category/list-categories/list-categories';
 import { UpdateCategoryUseCase } from 'src/core/data/use-cases/category/update-category/update-category.use-case';
-import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
+import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category/category.repository';
 import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
 import { CategoryInMemoryRepository } from 'src/core/infra/repository/category/category-in-memory.repository';
 import { CategorySequelizeRepository } from 'src/core/infra/repository/category/category.repository';

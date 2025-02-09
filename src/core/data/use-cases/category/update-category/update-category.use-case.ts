@@ -1,6 +1,6 @@
 import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
 
-import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
+import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category/category.repository';
 import {
   IUpdateCategoryInput,
   IUpdateCategoryUseCase,
