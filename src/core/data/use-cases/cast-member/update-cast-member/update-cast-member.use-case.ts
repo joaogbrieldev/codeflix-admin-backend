@@ -25,6 +25,8 @@ export class UpdateCastMemberUseCase implements IUpdateCastMemberUseCase {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     input.name && castMember.changeName(input.name);
 
+    if (input.type) castMember.changeType(input.type);
+
     await this._castMemberRepository.update(castMember);
 
     return CastMemberOutputMapper.toOutput(castMember);
