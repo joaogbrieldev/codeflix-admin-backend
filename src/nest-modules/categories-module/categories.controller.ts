@@ -30,8 +30,8 @@ import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from './categories.presenter';
-import { CreateCategoryInputDto } from './dto/create-category.dto';
-import { SearchCategoriesDto } from './dto/search-categories.dto';
+import { CreateCategoryInputDto } from './dtos/create-category.dto';
+import { SearchCategoriesDto } from './dtos/search-categories.dto';
 
 @Controller('categories')
 export class CategoriesController {
