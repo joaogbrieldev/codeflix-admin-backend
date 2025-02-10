@@ -12,6 +12,7 @@ export class CastMemberSearchParams extends SearchParams<CastMemberFilter> {}
 
 export class CastMemberSearchResult extends SearchResult<CastMember> {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ICastMemberRepository
   extends ISearchableRepository<
     CastMember,

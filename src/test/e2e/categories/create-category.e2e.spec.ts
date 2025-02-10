@@ -1,7 +1,7 @@
 import { instanceToPlain } from 'class-transformer';
 import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
 import { CategoryOutputMapper } from 'src/core/data/use-cases/category/common/category-output';
-import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
+import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category/category.repository';
 import { CreateCategoryFixture } from 'src/nest-modules/categories-module/__tests__/category.fixture';
 import { CategoriesController } from 'src/nest-modules/categories-module/categories.controller';
 import { CATEGORY_PROVIDERS } from 'src/nest-modules/categories-module/categories.providers';

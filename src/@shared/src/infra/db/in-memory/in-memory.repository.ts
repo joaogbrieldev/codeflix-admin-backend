@@ -71,6 +71,7 @@ export abstract class InMemoryRepository<
     const notExistsId = new Set<EntityId>();
     ids.forEach((id) => {
       const item = this.model.find((entity) => entity.entity_id.equals(id));
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       item ? existsId.add(id) : notExistsId.add(id);
     });
     return {
@@ -90,6 +91,7 @@ export abstract class InMemorySearchableRepository<
   extends InMemoryRepository<E, EntityId>
   implements ISearchableRepository<E, EntityId, Filter>
 {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   create(entity: E): Promise<void> {
     throw new Error('Method not implemented.');
   }

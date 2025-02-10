@@ -34,6 +34,10 @@ export class CastMember implements ICastMember {
     this.name = name;
   }
 
+  changeType(type: CastMemberTypeEnum): void {
+    this.type = type;
+  }
+
   get entity_id(): ValueObject {
     return this.castMemberId;
   }

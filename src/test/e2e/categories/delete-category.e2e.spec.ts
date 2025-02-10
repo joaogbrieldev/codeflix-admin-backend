@@ -1,4 +1,4 @@
-import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category.repository';
+import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category/category.repository';
 import { CATEGORY_PROVIDERS } from 'src/nest-modules/categories-module/categories.providers';
 import { startApp } from 'src/nest-modules/shared-module/testing/helpers';
 import { CategoryFakeBuilder } from 'src/test/fake-builders/category.fake-builder';
