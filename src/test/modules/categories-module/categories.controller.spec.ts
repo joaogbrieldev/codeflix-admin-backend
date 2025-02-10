@@ -7,7 +7,7 @@ import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from 'src/nest-modules/categories-module/categories.presenter';
-import { CreateCategoryInputDto } from 'src/nest-modules/categories-module/dto/create-category.dto';
+import { CreateCategoryInputDto } from 'src/nest-modules/categories-module/dtos/create-category.dto';
 
 describe('CategoriesController Unit Tests', () => {
   let controller: CategoriesController;

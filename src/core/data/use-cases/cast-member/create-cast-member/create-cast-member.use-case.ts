@@ -12,7 +12,6 @@ import {
 export class CreateCastMemberUseCase implements ICreateCastMemberUseCase {
   constructor(private readonly _castMemberRepository: ICastMemberRepository) {}
   async execute(input: ICreateCastMemberInput): Promise<CastMemberOutput> {
-    console.log(input);
     const castMember = CastMember.create(input);
     await this._castMemberRepository.create(castMember);
     return CastMemberOutputMapper.toOutput(castMember);
