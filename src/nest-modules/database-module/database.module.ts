@@ -2,10 +2,11 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 
+import { CastMemberModel } from 'src/core/infra/db/postgres/cast-member/cast-member.model';
 import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
 import { CONFIG_SCHEMA_TYPE } from '../config-module/config.module';
 
-const models = [CategoryModel];
+const models = [CategoryModel, CastMemberModel];
 
 @Global()
 @Module({
@@ -21,7 +22,7 @@ const models = [CategoryModel];
         if (dbVendor === 'sqlite') {
           return {
             dialect: 'sqlite',
-            storage: configService.get<string>('DB_HOST'), // Para SQLite, host é na verdade o caminho do arquivo
+            storage: configService.get<string>('DB_HOST'),
             models,
             logging: isLoggingEnabled,
             autoLoadModels,
@@ -32,19 +33,19 @@ const models = [CategoryModel];
           return {
             dialect: 'mysql',
             host: configService.get<string>('DB_HOST'),
-            port: Number(configService.get<number>('DB_PORT')) || 3306, // Garante que seja um número
+            port: Number(configService.get<number>('DB_PORT')) || 3306,
             database: configService.get<string>('DB_DATABASE'),
             username: configService.get<string>('DB_USERNAME'),
             password: configService.get<string>('DB_PASSWORD'),
             models,
             logging: isLoggingEnabled,
             autoLoadModels,
-            synchronize: true, // Evita recriação de tabelas automaticamente
+            synchronize: true,
             pool: {
-              max: 10, // Limita número máximo de conexões
-              min: 2, // Número mínimo de conexões
-              acquire: 30000, // Tempo máximo de espera para uma conexão
-              idle: 10000, // Tempo que uma conexão fica inativa antes de ser liberada
+              max: 10,
+              min: 2,
+              acquire: 30000,
+              idle: 10000,
             },
           };
         }
