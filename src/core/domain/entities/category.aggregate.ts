@@ -1,3 +1,4 @@
+import { AggreateRoot } from 'src/@shared/src/domain/models/entities/aggregate-root';
 import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
 import { ValueObject } from 'src/@shared/src/domain/value-objects/value-object';
 
@@ -18,7 +19,7 @@ export type CategoryCreateCommand = {
 
 export class CategoryId extends Uuid {}
 
-export class Category {
+export class Category extends AggreateRoot {
   category_id: CategoryId;
   name: string;
   description: string | null;
@@ -26,6 +27,7 @@ export class Category {
   created_at: Date;
 
   constructor(props: CategoryConstructorProps) {
+    super();
     this.category_id = props.category_id ?? new CategoryId();
     this.name = props.name;
     this.description = props.description ?? null;

@@ -1,7 +1,10 @@
 import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
 import { setupSequelize } from 'src/@shared/src/infra/test/helpers';
 import { DeleteCategoryUseCase } from 'src/core/data/use-cases/category/delete-category/delete-category.use-case';
-import { Category, CategoryId } from 'src/core/domain/entities/category.entity';
+import {
+  Category,
+  CategoryId,
+} from 'src/core/domain/entities/category.aggregate';
 import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
 import { CategorySequelizeRepository } from 'src/core/infra/repository/category/category.repository';
 
