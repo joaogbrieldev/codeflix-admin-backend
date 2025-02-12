@@ -3,7 +3,7 @@ import {
   ICreateCategoryInput,
   ICreateCategoryUseCase,
 } from 'src/core/domain/contracts/use-cases/category/create/create-category';
-import { Category } from 'src/core/domain/entities/category.entity';
+import { Category } from 'src/core/domain/entities/category.aggregate';
 import {
   CategoryOutput,
   CategoryOutputMapper,

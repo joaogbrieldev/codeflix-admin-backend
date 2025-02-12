@@ -3,7 +3,7 @@ import {
   IDeleteCategoryInput,
   IDeleteCategoryUseCase,
 } from 'src/core/domain/contracts/use-cases/category/delete/delete-category.use-case';
-import { CategoryId } from 'src/core/domain/entities/category.entity';
+import { CategoryId } from 'src/core/domain/entities/category.aggregate';
 
 export class DeleteCategoryUseCase implements IDeleteCategoryUseCase {
   constructor(private readonly _categoryRepository: ICategoryRepository) {}
