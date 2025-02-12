@@ -1,4 +1,4 @@
-import { Category } from 'src/core/domain/entities/category.entity';
+import { Category } from 'src/core/domain/entities/category.aggregate';
 
 describe('CategotyEntity', () => {
   test('Should be create a new Categoty', () => {

@@ -1,7 +1,7 @@
 import { ISearchableRepository } from 'src/@shared/src/domain/contracts/infra/repository/repository-base';
 import { SearchParams } from 'src/@shared/src/domain/contracts/infra/repository/search-params';
 import { SearchResult } from 'src/@shared/src/domain/contracts/infra/repository/search-result';
-import { Category, CategoryId } from '../../../entities/category.entity';
+import { Category, CategoryId } from '../../../entities/category.aggregate';
 
 export type CategoryFilter = string;
 

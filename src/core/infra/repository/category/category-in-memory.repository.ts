@@ -4,7 +4,10 @@ import {
   CategoryFilter,
   ICategoryRepository,
 } from '../../../domain/contracts/repositories/category/category.repository';
-import { Category, CategoryId } from '../../../domain/entities/category.entity';
+import {
+  Category,
+  CategoryId,
+} from '../../../domain/entities/category.aggregate';
 
 export class CategoryInMemoryRepository
   extends InMemorySearchableRepository<Category, CategoryId>

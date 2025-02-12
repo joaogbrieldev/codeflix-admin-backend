@@ -8,7 +8,7 @@ import { SearchResult } from 'src/@shared/src/domain/contracts/infra/repository/
 import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
 import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
 import { ICategoryRepository } from '../../../domain/contracts/repositories/category/category.repository';
-import { Category } from '../../../domain/entities/category.entity';
+import { Category } from '../../../domain/entities/category.aggregate';
 import { CategoryModel } from '../../db/postgres/category/category.model';
 import { CategoryModelMapper } from './category-model-mapper';
 

@@ -5,7 +5,10 @@ import {
   IGetCategoryInputUseCase,
   IGetCategoryUseCase,
 } from 'src/core/domain/contracts/use-cases/category/get-category/get-category';
-import { Category, CategoryId } from 'src/core/domain/entities/category.entity';
+import {
+  Category,
+  CategoryId,
+} from 'src/core/domain/entities/category.aggregate';
 import {
   CategoryOutput,
   CategoryOutputMapper,

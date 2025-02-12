@@ -1,4 +1,7 @@
-import { Category, CategoryId } from '../../../domain/entities/category.entity';
+import {
+  Category,
+  CategoryId,
+} from '../../../domain/entities/category.aggregate';
 import { CategoryModel } from '../../db/postgres/category/category.model';
 
 export class CategoryModelMapper {
