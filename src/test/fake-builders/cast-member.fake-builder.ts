@@ -2,7 +2,7 @@ import { Chance } from 'chance';
 import {
   CastMember,
   CastMemberId,
-} from 'src/core/domain/entities/cast-member.entity';
+} from 'src/core/domain/entities/cast-member/cast-member.aggregate';
 
 type PropOrFactory<T> = T | ((index: number) => T);
 
@@ -60,7 +60,7 @@ export class CastMemberFakeBuilder<TBuild = any> {
       .fill(undefined)
       .map((_, index) => {
         const castMember = new CastMember({
-          castMemberId: !this._castMember_id
+          cast_member_id: !this._castMember_id
             ? undefined
             : this.callFactory(this._castMember_id, index),
           name: this.callFactory(this._name, index),

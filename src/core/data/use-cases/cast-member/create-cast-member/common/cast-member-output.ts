@@ -1,19 +1,18 @@
-import { CastMember } from 'src/core/domain/entities/cast-member.entity';
-import { CastMemberTypeEnum } from 'src/core/domain/types/cast-member.types';
+import { CastMember } from 'src/core/domain/entities/cast-member/cast-member.aggregate';
 
 export type CastMemberOutput = {
   id: string;
   name: string;
-  type: CastMemberTypeEnum;
+  type: number;
   created_at: Date;
 };
 
 export class CastMemberOutputMapper {
   static toOutput(entity: CastMember): CastMemberOutput {
-    const { castMemberId, ...otherProps } = entity.toJSON();
+    const { cast_member_id, ...other_props } = entity.toJSON();
     return {
-      id: castMemberId,
-      ...otherProps,
+      id: cast_member_id,
+      ...other_props,
     };
   }
 }

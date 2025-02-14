@@ -3,7 +3,7 @@ import {
   IDeleteCastMemberInput,
   IDeleteCastMemberUseCase,
 } from 'src/core/domain/contracts/use-cases/cast-member/delete-cast-member';
-import { CastMemberId } from 'src/core/domain/entities/cast-member.entity';
+import { CastMemberId } from 'src/core/domain/entities/cast-member/cast-member.aggregate';
 
 export class DeleteCastMemberUseCase implements IDeleteCastMemberUseCase {
   constructor(private readonly _castMemberRepository: ICastMemberRepository) {}
