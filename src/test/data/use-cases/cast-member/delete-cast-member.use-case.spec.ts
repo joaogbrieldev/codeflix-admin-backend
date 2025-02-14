@@ -4,7 +4,7 @@ import { DeleteCastMemberUseCase } from 'src/core/data/use-cases/cast-member/del
 import {
   CastMember,
   CastMemberId,
-} from 'src/core/domain/entities/cast-member.entity';
+} from 'src/core/domain/entities/cast-member/cast-member.aggregate';
 import { CastMemberModel } from 'src/core/infra/db/postgres/cast-member/cast-member.model';
 import { CastMemberSequelizeRepository } from 'src/core/infra/repository/cast-member/cast-member.repository';
 import { CastMemberFakeBuilder } from 'src/test/fake-builders/cast-member.fake-builder';
@@ -31,10 +31,10 @@ describe('DeleteCastMemberUseCase Integration Tests', () => {
     const castMember = CastMemberFakeBuilder.aCastMember().build();
     await repository.create(castMember);
     await useCase.execute({
-      id: castMember.castMemberId.id,
+      id: castMember.cast_member_id.id,
     });
     await expect(
-      repository.findById(castMember.castMemberId),
+      repository.findById(castMember.cast_member_id),
     ).resolves.toBeNull();
   });
 });

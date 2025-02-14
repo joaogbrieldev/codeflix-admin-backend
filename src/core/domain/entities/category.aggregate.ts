@@ -1,4 +1,4 @@
-import { AggreateRoot } from 'src/@shared/src/domain/models/entities/aggregate-root';
+import { AggregateRoot } from 'src/@shared/src/domain/models/entities/aggregate-root';
 import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
 import { ValueObject } from 'src/@shared/src/domain/value-objects/value-object';
 
@@ -19,7 +19,7 @@ export type CategoryCreateCommand = {
 
 export class CategoryId extends Uuid {}
 
-export class Category extends AggreateRoot {
+export class Category extends AggregateRoot {
   category_id: CategoryId;
   name: string;
   description: string | null;

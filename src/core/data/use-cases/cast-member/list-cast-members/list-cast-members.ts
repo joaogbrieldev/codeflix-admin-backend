@@ -1,23 +1,27 @@
-import { PaginationOutputMapper } from 'src/@shared/src/data/pagination-output';
-
+import {
+  PaginationOutput,
+  PaginationOutputMapper,
+} from 'src/@shared/src/data/pagination-output';
+import { IUseCase } from 'src/@shared/src/domain/use-cases/use-case';
 import {
   CastMemberSearchParams,
   CastMemberSearchResult,
   ICastMemberRepository,
 } from 'src/core/domain/contracts/repositories/cast-member/cast-member.repository';
 import {
-  IListCastMembersUseCase,
-  ListCastMembersInput,
-  ListCastMembersOutput,
-} from 'src/core/domain/contracts/use-cases/cast-member/list-cast-members';
-import { CastMemberOutputMapper } from '../create-cast-member/common/cast-member-output';
+  CastMemberOutput,
+  CastMemberOutputMapper,
+} from '../create-cast-member/common/cast-member-output';
+import { ListCastMembersInput } from './list-cast-member.input.dto';
 
-export class ListCastMembersUseCase implements IListCastMembersUseCase {
-  constructor(private _castMemberRepository: ICastMemberRepository) {}
+export class ListCastMembersUseCase
+  implements IUseCase<ListCastMembersInput, ListCastMembersOutput>
+{
+  constructor(private castMemberRepo: ICastMemberRepository) {}
 
   async execute(input: ListCastMembersInput): Promise<ListCastMembersOutput> {
-    const params = new CastMemberSearchParams(input);
-    const searchResult = await this._castMemberRepository.search(params);
+    const params = CastMemberSearchParams.create(input);
+    const searchResult = await this.castMemberRepo.search(params);
     return this.toOutput(searchResult);
   }
 
@@ -31,3 +35,5 @@ export class ListCastMembersUseCase implements IListCastMembersUseCase {
     return PaginationOutputMapper.toOutput(items, searchResult);
   }
 }
+
+export type ListCastMembersOutput = PaginationOutput<CastMemberOutput>;

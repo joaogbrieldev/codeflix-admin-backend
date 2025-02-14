@@ -2,8 +2,8 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 
-import { CastMemberModel } from 'src/core/infra/db/postgres/cast-member/cast-member.model';
 import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
+import { CastMemberModel } from 'src/core/infra/repository/cast-member/cast-member.repository';
 import { CONFIG_SCHEMA_TYPE } from '../config-module/config.module';
 
 const models = [CategoryModel, CastMemberModel];

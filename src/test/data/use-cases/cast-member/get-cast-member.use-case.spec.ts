@@ -4,7 +4,7 @@ import { GetCastMemberUseCase } from 'src/core/data/use-cases/cast-member/get-ca
 import {
   CastMember,
   CastMemberId,
-} from 'src/core/domain/entities/cast-member.entity';
+} from 'src/core/domain/entities/cast-member/cast-member.aggregate';
 
 import { CastMemberModel } from 'src/core/infra/db/postgres/cast-member/cast-member.model';
 import { CastMemberSequelizeRepository } from 'src/core/infra/repository/cast-member/cast-member.repository';
@@ -22,20 +22,20 @@ describe('GetCastMemberUseCase8691 Integration Tests', () => {
   });
 
   it('should throws error when entity not found', async () => {
-    const castMemberId = new CastMemberId();
+    const cast_member_id = new CastMemberId();
     await expect(() =>
-      useCase.execute({ id: castMemberId.id }),
-    ).rejects.toThrow(new NotFoundError(castMemberId.id, CastMember));
+      useCase.execute({ id: cast_member_id.id }),
+    ).rejects.toThrow(new NotFoundError(cast_member_id.id, CastMember));
   });
 
   it('should FindById a CastMember', async () => {
     const castMember = CastMemberFakeBuilder.aCastMember().build();
     await repository.create(castMember);
     const execute = await useCase.execute({
-      id: castMember.castMemberId.id,
+      id: castMember.cast_member_id.id,
     });
     expect(execute).toStrictEqual({
-      id: castMember.castMemberId.id,
+      id: castMember.cast_member_id.id,
       name: castMember.name,
       type: castMember.type,
       created_at: castMember.created_at,

@@ -1,16 +1,54 @@
-import { Op, literal } from 'sequelize';
-
 import {
-  SearchParams,
-  SortDirection,
-} from 'src/@shared/src/domain/contracts/infra/repository/search-params';
-import { SearchResult } from 'src/@shared/src/domain/contracts/infra/repository/search-result';
+  Column,
+  DataType,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
+
+import { literal, Op } from 'sequelize';
+import { SortDirection } from 'src/@shared/src/domain/contracts/infra/repository/search-params';
 import { NotFoundError } from 'src/@shared/src/domain/errors/not-found.error';
-import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
-import { ICastMemberRepository } from 'src/core/domain/contracts/repositories/cast-member/cast-member.repository';
-import { CastMember } from 'src/core/domain/entities/cast-member.entity';
-import { CastMemberModel } from '../../db/postgres/cast-member/cast-member.model';
-import { CastMemberModelMapper } from './cast-member.model-mapper';
+import { LoadEntityError } from 'src/@shared/src/domain/validators/validators.error';
+import {
+  CastMemberSearchParams,
+  CastMemberSearchResult,
+  ICastMemberRepository,
+} from 'src/core/domain/contracts/repositories/cast-member/cast-member.repository';
+import {
+  CastMember,
+  CastMemberId,
+} from 'src/core/domain/entities/cast-member/cast-member.aggregate';
+import {
+  CastMemberType,
+  CastMemberTypeEnum,
+} from 'src/core/domain/types/cast-member.types';
+
+export type CastMemberModelProps = {
+  cast_member_id: string;
+  name: string;
+  type: CastMemberTypeEnum;
+  created_at: Date;
+};
+
+@Table({ tableName: 'cast_members', timestamps: false })
+export class CastMemberModel extends Model<CastMemberModelProps> {
+  @PrimaryKey
+  @Column({ type: DataType.UUID })
+  declare cast_member_id: string;
+
+  @Column({ allowNull: false, type: DataType.STRING(255) })
+  declare name: string;
+
+  @Column({
+    allowNull: false,
+    type: DataType.SMALLINT,
+  })
+  declare type: CastMemberTypeEnum;
+
+  @Column({ allowNull: false, type: DataType.DATE(3) })
+  declare created_at: Date;
+}
 
 export class CastMemberSequelizeRepository implements ICastMemberRepository {
   sortableFields: string[] = ['name', 'created_at'];
@@ -19,50 +57,27 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
       name: (sort_dir: SortDirection) => literal(`binary name ${sort_dir}`),
     },
   };
-
   constructor(private castMemberModel: typeof CastMemberModel) {}
 
   async create(entity: CastMember): Promise<void> {
-    const modelProps = CastMemberModelMapper.toModel(entity);
-    await this.castMemberModel.create(modelProps.toJSON());
+    await this.castMemberModel.create(entity.toJSON());
   }
 
   async bulkInsert(entities: CastMember[]): Promise<void> {
-    const modelsProps = entities.map((entity) =>
-      CastMemberModelMapper.toModel(entity).toJSON(),
-    );
-    await this.castMemberModel.bulkCreate(modelsProps);
+    await this.castMemberModel.bulkCreate(entities.map((e) => e.toJSON()));
   }
 
-  async update(entity: CastMember): Promise<void> {
-    const id = entity.castMemberId.id;
-
-    const modelProps = CastMemberModelMapper.toModel(entity);
-    const [affectedRows] = await this.castMemberModel.update(
-      modelProps.toJSON(),
-      {
-        where: { cast_member_id: entity.castMemberId.id },
-      },
-    );
-
-    if (affectedRows !== 1) {
-      throw new NotFoundError(id, this.getEntity());
-    }
+  async findById(id: CastMemberId): Promise<CastMember | null> {
+    const model = await this._get(id.id);
+    return model ? CastMemberModelMapper.toEntity(model) : null;
   }
 
-  async delete(cast_member_id: Uuid): Promise<void> {
-    const id = cast_member_id.id;
-
-    const affectedRows = await this.castMemberModel.destroy({
-      where: { cast_member_id: id },
-    });
-
-    if (affectedRows !== 1) {
-      throw new NotFoundError(id, this.getEntity());
-    }
+  async getAll(): Promise<CastMember[]> {
+    const models = await this.castMemberModel.findAll();
+    return models.map((m) => CastMemberModelMapper.toEntity(m));
   }
 
-  async findByIds(ids: Uuid[]): Promise<CastMember[]> {
+  async findByIds(ids: CastMemberId[]): Promise<CastMember[]> {
     const models = await this.castMemberModel.findAll({
       where: {
         cast_member_id: {
@@ -74,8 +89,8 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
   }
 
   async existsById(
-    ids: Uuid[],
-  ): Promise<{ exists: Uuid[]; not_exists: Uuid[] }> {
+    ids: CastMemberId[],
+  ): Promise<{ exists: CastMemberId[]; not_exists: CastMemberId[] }> {
     if (!ids.length) {
       throw new Error('ids must be an array with at least one element');
     }
@@ -89,7 +104,7 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
       },
     });
     const existsCastMemberIds = existsCastMemberModels.map(
-      (m) => new Uuid(m.cast_member_id),
+      (m) => new CastMemberId(m.cast_member_id),
     );
     const notExistsCastMemberIds = ids.filter(
       (id) => !existsCastMemberIds.some((e) => e.equals(id)),
@@ -100,39 +115,61 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
     };
   }
 
-  async findById(entity_id: Uuid): Promise<CastMember | null> {
-    const model = await this.castMemberModel.findByPk(entity_id.id);
+  async update(entity: CastMember): Promise<void> {
+    const id = entity.cast_member_id.id;
 
-    return model ? CastMemberModelMapper.toEntity(model) : null;
-  }
-
-  async getAll(): Promise<CastMember[]> {
-    const models = await this.castMemberModel.findAll();
-    return models.map((model) => {
-      return CastMemberModelMapper.toEntity(model);
+    const [affectedRows] = await this.castMemberModel.update(entity.toJSON(), {
+      where: { cast_member_id: entity.cast_member_id.id },
     });
+
+    if (affectedRows !== 1) {
+      throw new NotFoundError(id, this.getEntity());
+    }
+  }
+  async delete(cast_member_id: CastMemberId): Promise<void> {
+    const id = cast_member_id.id;
+
+    const affectedRows = await this.castMemberModel.destroy({
+      where: { cast_member_id: id },
+    });
+
+    if (affectedRows !== 1) {
+      throw new NotFoundError(id, this.getEntity());
+    }
   }
 
-  async search(props: SearchParams): Promise<SearchResult<CastMember>> {
+  private async _get(id: string): Promise<CastMemberModel | null> {
+    return this.castMemberModel.findByPk(id);
+  }
+
+  async search(props: CastMemberSearchParams): Promise<CastMemberSearchResult> {
     const offset = (props.page - 1) * props.per_page;
     const limit = props.per_page;
+
+    const where = {};
+
+    if (props.filter && (props.filter.name || props.filter.type)) {
+      if (props.filter.name) {
+        where['name'] = { [Op.like]: `%${props.filter.name}%` };
+      }
+
+      if (props.filter.type) {
+        where['type'] = props.filter.type.type;
+      }
+    }
+
     const { rows: models, count } = await this.castMemberModel.findAndCountAll({
       ...(props.filter && {
-        where: {
-          name: { [Op.like]: `%${props.filter}%` },
-        },
+        where,
       }),
       ...(props.sort && this.sortableFields.includes(props.sort)
-        ? //? { order: [[props.sort, props.sort_dir]] }
-          { order: this.formatSort(props.sort, props.sort_dir!) }
-        : { order: [['created_at', 'desc']] }),
+        ? { order: this.formatSort(props.sort, props.sort_dir!) }
+        : { order: [['created_at', 'DESC']] }),
       offset,
       limit,
     });
-    return new SearchResult({
-      items: models.map((model) => {
-        return CastMemberModelMapper.toEntity(model);
-      }),
+    return new CastMemberSearchResult({
+      items: models.map((m) => CastMemberModelMapper.toEntity(m)),
       current_page: props.page,
       per_page: props.per_page,
       total: count,
@@ -149,5 +186,33 @@ export class CastMemberSequelizeRepository implements ICastMemberRepository {
 
   getEntity(): new (...args: any[]) => CastMember {
     return CastMember;
+  }
+}
+
+export class CastMemberModelMapper {
+  static toEntity(model: CastMemberModel) {
+    const { cast_member_id: id, ...otherData } = model.toJSON();
+    const [type, errorCastMemberType] = CastMemberType.create(
+      otherData.type as any,
+    ).asArray();
+
+    const castMember = new CastMember({
+      ...otherData,
+      cast_member_id: new CastMemberId(id),
+      type,
+    });
+
+    castMember.validate();
+
+    const notification = castMember.notification;
+    if (errorCastMemberType) {
+      notification.setError(errorCastMemberType.message, 'type');
+    }
+
+    if (notification.hasErrors()) {
+      throw new LoadEntityError(notification.toJSON());
+    }
+
+    return castMember;
   }
 }

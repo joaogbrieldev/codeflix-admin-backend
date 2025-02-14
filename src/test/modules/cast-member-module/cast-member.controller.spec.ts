@@ -2,7 +2,10 @@ import { SortDirection } from 'src/@shared/src/domain/contracts/infra/repository
 import { CastMemberOutput } from 'src/core/data/use-cases/cast-member/create-cast-member/common/cast-member-output';
 import { ListCastMembersOutput } from 'src/core/domain/contracts/use-cases/cast-member/list-cast-members';
 import { IUpdateCastMemberInput } from 'src/core/domain/contracts/use-cases/cast-member/update-cast-member';
-import { CastMemberTypeEnum } from 'src/core/domain/types/cast-member.types';
+import {
+  CastMemberType,
+  CastMemberTypeEnum,
+} from 'src/core/domain/types/cast-member.types';
 import { CastMembersController } from 'src/nest-modules/cast-member-module/cast-member.controller';
 import {
   CastMemberCollectionPresenter,
@@ -22,7 +25,7 @@ describe('CastMemberController Unit Tests', () => {
     const output: CastMemberOutput = {
       id: '9366b7dc-2d71-4799-b91c-c64adb205104',
       name: 'Movie',
-      type: CastMemberTypeEnum.actor,
+      type: CastMemberTypeEnum.ACTOR,
       created_at: new Date(),
     };
     const mockCreateUseCase = {
@@ -31,7 +34,7 @@ describe('CastMemberController Unit Tests', () => {
     controller['_createCastMemberUseCase'] = mockCreateUseCase;
     const input: CreateCastMemberInputDto = {
       name: 'Movie',
-      type: CastMemberTypeEnum.actor,
+      type: CastMemberType.create(CastMemberTypeEnum.ACTOR),
     };
 
     //Act
@@ -48,7 +51,7 @@ describe('CastMemberController Unit Tests', () => {
     const output: CastMemberOutput = {
       id,
       name: 'Movie',
-      type: CastMemberTypeEnum.actor,
+      type: CastMemberTypeEnum.ACTOR,
       created_at: new Date(),
     };
     const mockUpdateUseCase = {
@@ -58,10 +61,12 @@ describe('CastMemberController Unit Tests', () => {
     const input: IUpdateCastMemberInput = {
       id: output.id,
       name: 'Movie',
-      type: CastMemberTypeEnum.actor,
+      type: CastMemberType.create(CastMemberTypeEnum.ACTOR),
     };
     const presenter = await controller.update(id, input);
-    expect(mockUpdateUseCase.execute).toHaveBeenCalledWith({ id, ...input });
+    expect(mockUpdateUseCase.execute).toHaveBeenCalledWith({
+      ...input,
+    });
     expect(presenter).toBeInstanceOf(CastMemberPresenter);
     expect(presenter).toStrictEqual(new CastMemberPresenter(output));
   });
@@ -84,7 +89,7 @@ describe('CastMemberController Unit Tests', () => {
     const output: CastMemberOutput = {
       id,
       name: 'Movie',
-      type: CastMemberTypeEnum.actor,
+      type: CastMemberTypeEnum.ACTOR,
       created_at: new Date(),
     };
     const mockGetUseCase = {
@@ -103,7 +108,7 @@ describe('CastMemberController Unit Tests', () => {
         {
           id: '9366b7dc-2d71-4799-b91c-c64adb205104',
           name: 'Movie',
-          type: CastMemberTypeEnum.actor,
+          type: CastMemberTypeEnum.ACTOR,
           created_at: new Date(),
         },
       ],
@@ -121,7 +126,7 @@ describe('CastMemberController Unit Tests', () => {
       per_page: 2,
       sort: 'name',
       sort_dir: 'desc' as SortDirection,
-      filter: 'test',
+      filter: {},
     };
     const presenter = await controller.search(searchParams);
     expect(presenter).toBeInstanceOf(CastMemberCollectionPresenter);

@@ -64,7 +64,7 @@ describe('CategoriesController Unit Tests', () => {
       is_active: true,
     };
     const presenter = await controller.update(id, input);
-    expect(mockUpdateUseCase.execute).toHaveBeenCalledWith({ id, ...input });
+    expect(mockUpdateUseCase.execute).toHaveBeenCalledWith({ ...input });
     expect(presenter).toBeInstanceOf(CategoryPresenter);
     expect(presenter).toStrictEqual(new CategoryPresenter(output));
   });

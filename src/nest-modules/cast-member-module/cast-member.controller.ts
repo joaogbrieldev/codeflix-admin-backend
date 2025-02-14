@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 
 import { CastMemberOutput } from 'src/core/data/use-cases/cast-member/create-cast-member/common/cast-member-output';
+import { CreateCastMemberInput } from 'src/core/data/use-cases/cast-member/create-cast-member/create-cast-member.input.dto';
 import { CreateCastMemberUseCase } from 'src/core/data/use-cases/cast-member/create-cast-member/create-cast-member.use-case';
 import { DeleteCastMemberUseCase } from 'src/core/data/use-cases/cast-member/delete-cast-member/delete-cast-member.use-case';
 import { GetCastMemberUseCase } from 'src/core/data/use-cases/cast-member/get-cast-member/get-cast-member.use-case';
@@ -30,7 +31,6 @@ import {
   CastMemberCollectionPresenter,
   CastMemberPresenter,
 } from './cast-member.presenter';
-import { CreateCastMemberInputDto } from './dtos/create-cast-member.dto';
 import { SearchCastMembersDto } from './dtos/search-cast-member.dto';
 
 @Controller('cast-members')
@@ -53,7 +53,7 @@ export class CastMembersController {
   constructor() {}
 
   @Post('/')
-  async create(@Body() createCastMemberDto: CreateCastMemberInputDto) {
+  async create(@Body() createCastMemberDto: CreateCastMemberInput) {
     const output =
       await this._createCastMemberUseCase.execute(createCastMemberDto);
     return CastMembersController.serialize(output);

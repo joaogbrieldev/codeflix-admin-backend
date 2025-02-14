@@ -8,7 +8,7 @@ import {
 import {
   CastMember,
   CastMemberId,
-} from 'src/core/domain/entities/cast-member.entity';
+} from 'src/core/domain/entities/cast-member/cast-member.aggregate';
 import {
   CastMemberOutput,
   CastMemberOutputMapper,
