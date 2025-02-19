@@ -5,8 +5,10 @@ import {
   CastMember,
   CastMemberId,
 } from 'src/core/domain/entities/cast-member/cast-member.aggregate';
-import { CastMemberModel } from 'src/core/infra/db/postgres/cast-member/cast-member.model';
-import { CastMemberSequelizeRepository } from 'src/core/infra/repository/cast-member/cast-member.repository';
+import {
+  CastMemberModel,
+  CastMemberSequelizeRepository,
+} from 'src/core/infra/repository/cast-member/cast-member.repository';
 import { CastMemberFakeBuilder } from 'src/test/fake-builders/cast-member.fake-builder';
 
 describe('DeleteCastMemberUseCase Integration Tests', () => {
