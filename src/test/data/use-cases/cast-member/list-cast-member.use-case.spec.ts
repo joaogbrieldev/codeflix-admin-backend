@@ -1,8 +1,10 @@
 import { setupSequelize } from 'src/@shared/src/infra/test/helpers';
 import { ICastMemberRepository } from 'src/core/domain/contracts/repositories/cast-member/cast-member.repository';
-import { CastMemberModel } from 'src/core/infra/db/postgres/cast-member/cast-member.model';
 
-import { CastMemberSequelizeRepository } from 'src/core/infra/repository/cast-member/cast-member.repository';
+import {
+  CastMemberModel,
+  CastMemberSequelizeRepository,
+} from 'src/core/infra/repository/cast-member/cast-member.repository';
 import { CastMemberFakeBuilder } from 'src/test/fake-builders/cast-member.fake-builder';
 
 describe('listCastMemberUseCase Integration Test', () => {

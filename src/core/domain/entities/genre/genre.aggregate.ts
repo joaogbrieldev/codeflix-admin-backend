@@ -1,9 +1,9 @@
 import { AggregateRoot } from 'src/@shared/src/domain/models/entities/aggregate-root';
+import { Notification } from 'src/@shared/src/domain/validators/notification';
 import { Uuid } from 'src/@shared/src/domain/value-objects/uuid.vo';
-import { ValueObject } from 'src/@shared/src/domain/value-objects/value-object';
+import { GenreFakeBuilder } from 'src/test/fake-builders/genre.fake-builder';
 import { CategoryId } from '../category.aggregate';
-
-export class GenreId extends Uuid {}
+import GenreValidatorFactory from './genre.validator';
 
 export type GenreConstructorProps = {
   genre_id?: GenreId;
@@ -19,12 +19,15 @@ export type GenreCreateCommand = {
   is_active?: boolean;
 };
 
+export class GenreId extends Uuid {}
+
 export class Genre extends AggregateRoot {
   genre_id: GenreId;
   name: string;
   categories_id: Map<string, CategoryId>;
   is_active: boolean;
   created_at: Date;
+  nofication: Notification;
 
   constructor(props: GenreConstructorProps) {
     super();
@@ -36,42 +39,63 @@ export class Genre extends AggregateRoot {
   }
 
   static create(props: GenreCreateCommand) {
-    return new Genre({
+    const genre = new Genre({
       ...props,
       categories_id: new Map(
         props.categories_id.map((category_id) => [category_id.id, category_id]),
       ),
     });
+    genre.validate();
+    return genre;
   }
 
   changeName(name: string) {
     this.name = name;
+    this.validate(['name']);
+  }
+
+  addCategoryId(category_id: CategoryId) {
+    this.categories_id.set(category_id.id, category_id);
+  }
+
+  removeCategoryId(category_id: CategoryId) {
+    this.categories_id.delete(category_id.id);
+  }
+
+  syncCategoriesId(categories_id: CategoryId[]) {
+    if (!categories_id.length) {
+      throw new Error('Categories id is empty');
+    }
+
+    this.categories_id = new Map(
+      categories_id.map((category_id) => [category_id.id, category_id]),
+    );
   }
 
   activate() {
     this.is_active = true;
   }
 
-  desactivate() {
+  deactivate() {
     this.is_active = false;
   }
 
-  addCategoryId(category_id: CategoryId) {
-    return this.categories_id.set(category_id.id, category_id);
+  get entity_id() {
+    return this.genre_id;
   }
 
-  syncCategoriesId(categories_id: CategoryId[]) {
-    if (categories_id.length) {
-      throw new Error('Categories id is empty');
-    }
-    this.categories_id = new Map(
-      categories_id.map((category_id) => [category_id.id, category_id]),
-    );
+  validate(fields?: string[]) {
+    const validator = GenreValidatorFactory.create();
+    return validator.validate(this.nofication, this, fields);
+  }
+
+  static fake() {
+    return GenreFakeBuilder;
   }
 
   toJSON() {
     return {
-      genre_id: this.genre_id,
+      genre_id: this.genre_id.id,
       name: this.name,
       categories_id: Array.from(this.categories_id.values()).map(
         (category_id) => category_id.id,
@@ -79,9 +103,5 @@ export class Genre extends AggregateRoot {
       is_active: this.is_active,
       created_at: this.created_at,
     };
-  }
-
-  get entity_id(): ValueObject {
-    return this.genre_id;
   }
 }
