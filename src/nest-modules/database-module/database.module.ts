@@ -1,52 +1,46 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, Module, Scope } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { SequelizeModule } from '@nestjs/sequelize';
-
-import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
-import { CastMemberModel } from 'src/core/infra/repository/cast-member/cast-member.repository';
+import { SequelizeModule, getConnectionToken } from '@nestjs/sequelize';
+import { Sequelize } from 'sequelize';
+import { CategoryModel } from '../../core/category/infra/db/sequelize/category.model';
+import { UnitOfWorkSequelize } from '../../core/shared/infra/db/sequelize/unit-of-work-sequelize';
 import { CONFIG_SCHEMA_TYPE } from '../config-module/config.module';
 
-const models = [CategoryModel, CastMemberModel];
+import {
+  GenreCategoryModel,
+  GenreModel,
+} from 'src/core/genre/infra/db/sequelize/genre-model';
+import { CastMemberModel } from '../../core/cast-member/infra/db/sequelize/cast-member-sequelize';
+
+const models = [CategoryModel, GenreModel, GenreCategoryModel, CastMemberModel];
 
 @Global()
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
       useFactory: (configService: ConfigService<CONFIG_SCHEMA_TYPE>) => {
-        const dbVendor = configService.get<string>('DB_VENDOR');
-        const isLoggingEnabled =
-          configService.get<boolean>('DB_LOGGING') ?? false;
-        const autoLoadModels =
-          configService.get<boolean>('DB_AUTO_LOAD_MODELS') ?? false;
-
+        const dbVendor = configService.get('DB_VENDOR');
         if (dbVendor === 'sqlite') {
           return {
             dialect: 'sqlite',
-            storage: configService.get<string>('DB_HOST'),
+            host: configService.get('DB_HOST'),
             models,
-            logging: isLoggingEnabled,
-            autoLoadModels,
+            logging: configService.get('DB_LOGGING'),
+            autoLoadModels: configService.get('DB_AUTO_LOAD_MODELS'),
           };
         }
 
         if (dbVendor === 'mysql') {
           return {
             dialect: 'mysql',
-            host: configService.get<string>('DB_HOST'),
-            port: Number(configService.get<number>('DB_PORT')) || 3306,
-            database: configService.get<string>('DB_DATABASE'),
-            username: configService.get<string>('DB_USERNAME'),
-            password: configService.get<string>('DB_PASSWORD'),
+            host: configService.get('DB_HOST'),
+            port: configService.get('DB_PORT'),
+            database: configService.get('DB_DATABASE'),
+            username: configService.get('DB_USERNAME'),
+            password: configService.get('DB_PASSWORD'),
             models,
-            logging: isLoggingEnabled,
-            autoLoadModels,
-            synchronize: true,
-            pool: {
-              max: 10,
-              min: 2,
-              acquire: 30000,
-              idle: 10000,
-            },
+            logging: configService.get('DB_LOGGING'),
+            autoLoadModels: configService.get('DB_AUTO_LOAD_MODELS'),
           };
         }
 
@@ -55,5 +49,21 @@ const models = [CategoryModel, CastMemberModel];
       inject: [ConfigService],
     }),
   ],
+  providers: [
+    {
+      provide: UnitOfWorkSequelize,
+      useFactory: (sequelize: Sequelize) => {
+        return new UnitOfWorkSequelize(sequelize);
+      },
+      inject: [getConnectionToken()],
+      scope: Scope.REQUEST,
+    },
+    {
+      provide: 'UnitOfWork',
+      useExisting: UnitOfWorkSequelize,
+      scope: Scope.REQUEST,
+    },
+  ],
+  exports: ['UnitOfWork'],
 })
 export class DatabaseModule {}

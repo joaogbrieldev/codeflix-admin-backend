@@ -1,13 +1,14 @@
 import { getModelToken } from '@nestjs/sequelize';
-import { CreateCategoryUseCase } from 'src/core/data/use-cases/category/create-category/create-category.use-case';
-import { DeleteCategoryUseCase } from 'src/core/data/use-cases/category/delete-category/delete-category.use-case';
-import { GetCategoryUseCase } from 'src/core/data/use-cases/category/get-category/get-category.use-case';
-import { ListCategoriesUseCase } from 'src/core/data/use-cases/category/list-categories/list-categories';
-import { UpdateCategoryUseCase } from 'src/core/data/use-cases/category/update-category/update-category.use-case';
-import { ICategoryRepository } from 'src/core/domain/contracts/repositories/category/category.repository';
-import { CategoryModel } from 'src/core/infra/db/postgres/category/category.model';
-import { CategoryInMemoryRepository } from 'src/core/infra/repository/category/category-in-memory.repository';
-import { CategorySequelizeRepository } from 'src/core/infra/repository/category/category.repository';
+import { CategoryInMemoryRepository } from '../../core/category/infra/db/in-memory/category-in-memory.repository';
+import { CreateCategoryUseCase } from '../../core/category/application/use-cases/create-category/create-category.use-case';
+import { UpdateCategoryUseCase } from '../../core/category/application/use-cases/update-category/update-category.use-case';
+import { ListCategoriesUseCase } from '../../core/category/application/use-cases/list-categories/list-categories.use-case';
+import { GetCategoryUseCase } from '../../core/category/application/use-cases/get-category/get-category.use-case';
+import { DeleteCategoryUseCase } from '../../core/category/application/use-cases/delete-category/delete-category.use-case';
+import { CategorySequelizeRepository } from '../../core/category/infra/db/sequelize/category-sequelize.repository';
+import { CategoryModel } from '../../core/category/infra/db/sequelize/category.model';
+import { ICategoryRepository } from '../../core/category/domain/category.repository';
+import { CategoriesIdExistsInDatabaseValidator } from '../../core/category/application/validations/categories-ids-exists-in-database.validator';
 
 export const REPOSITORIES = {
   CATEGORY_REPOSITORY: {
@@ -65,7 +66,18 @@ export const USE_CASES = {
   },
 };
 
+export const VALIDATIONS = {
+  CATEGORIES_IDS_EXISTS_IN_DATABASE_VALIDATOR: {
+    provide: CategoriesIdExistsInDatabaseValidator,
+    useFactory: (categoryRepo: ICategoryRepository) => {
+      return new CategoriesIdExistsInDatabaseValidator(categoryRepo);
+    },
+    inject: [REPOSITORIES.CATEGORY_REPOSITORY.provide],
+  },
+};
+
 export const CATEGORY_PROVIDERS = {
   REPOSITORIES,
   USE_CASES,
+  VALIDATIONS,
 };
