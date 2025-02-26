@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
-import { CategoryOutput } from 'src/core/data/use-cases/category/common/category-output';
-import { ListCategoriesOutput } from 'src/core/domain/contracts/use-cases/category/list-categories/list-categories';
+import { CategoryOutput } from '../../core/category/application/use-cases/common/category-output';
+import { ListCategoriesOutput } from '../../core/category/application/use-cases/list-categories/list-categories.use-case';
 import { CollectionPresenter } from '../shared-module/collection.presenter';
 
 export class CategoryPresenter {
