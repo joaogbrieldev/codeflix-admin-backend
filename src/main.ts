@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { applyGlobalConfig } from './nest-modules/global.config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: process.env.NODE_ENV === 'production' ? console : undefined,
+  });
+
   applyGlobalConfig(app);
-  await app.listen(process.env.PORT ?? 3000);
-  console.log('app running at port 3000');
+
+  await app.listen(3000);
 }
 bootstrap();
