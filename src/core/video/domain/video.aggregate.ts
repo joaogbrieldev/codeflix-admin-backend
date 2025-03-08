@@ -1,9 +1,18 @@
-import { CastMemberId } from '@core/cast-member/domain/cast-member.aggregate';
-import { CategoryId } from '@core/category/domain/category.aggregate';
-import { GenreId } from '@core/genre/domain/genre.aggregate';
-import { AggregateRoot } from '@core/shared/domain/aggregate-root';
-import { ValueObject } from '@core/shared/domain/value-object';
-import { Uuid } from '@core/shared/domain/value-objects/uuid.vo';
+import { CastMemberId } from '../../cast-member/domain/cast-member.aggregate';
+import { CategoryId } from '../../category/domain/category.aggregate';
+import { GenreId } from '../../genre/domain/genre.aggregate';
+import { AggregateRoot } from '../../shared/domain/aggregate-root';
+import { Uuid } from '../../shared/domain/value-objects/uuid.vo';
+import { Banner } from './banner.vo';
+
+import { Rating } from './rating.vo';
+import { ThumbnailHalf } from './thumbnail-half.vo';
+import { Thumbnail } from './thumbnail.vo';
+import { Trailer } from './trailer.vo';
+import { VideoMedia } from './video-media.vo';
+
+import { VideoFakeBuilder } from './video-fake.builder';
+import VideoValidatorFactory from './video.validator';
 
 export type VideoConstructorProps = {
   video_id?: VideoId;
@@ -11,8 +20,16 @@ export type VideoConstructorProps = {
   description: string;
   year_launched: number;
   duration: number;
+  rating: Rating;
   is_opened: boolean;
   is_published: boolean;
+
+  banner?: Banner | null;
+  thumbnail?: Thumbnail | null;
+  thumbnail_half?: ThumbnailHalf | null;
+  trailer?: Trailer | null;
+  video?: VideoMedia | null;
+
   categories_id: Map<string, CategoryId>;
   genres_id: Map<string, GenreId>;
   cast_members_id: Map<string, CastMemberId>;
@@ -24,7 +41,15 @@ export type VideoCreateCommand = {
   description: string;
   year_launched: number;
   duration: number;
+  rating: Rating;
   is_opened: boolean;
+
+  banner?: Banner;
+  thumbnail?: Thumbnail;
+  thumbnail_half?: ThumbnailHalf;
+  trailer?: Trailer;
+  video?: VideoMedia;
+
   categories_id: CategoryId[];
   genres_id: GenreId[];
   cast_members_id: CastMemberId[];
@@ -38,12 +63,21 @@ export class Video extends AggregateRoot {
   description: string;
   year_launched: number;
   duration: number;
+  rating: Rating;
   is_opened: boolean;
-  is_published: boolean;
+  is_published: boolean; //uploads
+
+  banner: Banner | null;
+  thumbnail: Thumbnail | null;
+  thumbnail_half: ThumbnailHalf | null;
+  trailer: Trailer | null;
+  video: VideoMedia | null;
+
   categories_id: Map<string, CategoryId>;
   genres_id: Map<string, GenreId>;
   cast_members_id: Map<string, CastMemberId>;
-  created_at?: Date;
+
+  created_at: Date;
 
   constructor(props: VideoConstructorProps) {
     super();
@@ -52,8 +86,16 @@ export class Video extends AggregateRoot {
     this.description = props.description;
     this.year_launched = props.year_launched;
     this.duration = props.duration;
+    this.rating = props.rating;
     this.is_opened = props.is_opened;
     this.is_published = props.is_published;
+
+    this.banner = props.banner ?? null;
+    this.thumbnail = props.thumbnail ?? null;
+    this.thumbnail_half = props.thumbnail_half ?? null;
+    this.trailer = props.trailer ?? null;
+    this.video = props.video ?? null;
+
     this.categories_id = props.categories_id;
     this.genres_id = props.genres_id;
     this.cast_members_id = props.cast_members_id;
@@ -68,23 +110,30 @@ export class Video extends AggregateRoot {
       cast_members_id: new Map(props.cast_members_id.map((id) => [id.id, id])),
       is_published: false,
     });
+    video.validate(['title']);
+
     return video;
   }
 
   changeTitle(title: string): void {
     this.title = title;
+    this.validate(['title']);
   }
 
   changeDescription(description: string): void {
     this.description = description;
   }
 
-  changeYearLaunched(year_launched: number): void {
-    this.year_launched = year_launched;
+  changeYearLaunched(yearLaunched: number): void {
+    this.year_launched = yearLaunched;
   }
 
   changeDuration(duration: number): void {
     this.duration = duration;
+  }
+
+  changeRating(rating: Rating): void {
+    this.rating = rating;
   }
 
   markAsOpened(): void {
@@ -95,6 +144,26 @@ export class Video extends AggregateRoot {
     this.is_opened = false;
   }
 
+  replaceBanner(banner: Banner): void {
+    this.banner = banner;
+  }
+
+  replaceThumbnail(thumbnail: Thumbnail): void {
+    this.thumbnail = thumbnail;
+  }
+
+  replaceThumbnailHalf(thumbnailHalf: ThumbnailHalf): void {
+    this.thumbnail_half = thumbnailHalf;
+  }
+
+  replaceTrailer(trailer: Trailer): void {
+    this.trailer = trailer;
+  }
+
+  replaceVideo(video: VideoMedia): void {
+    this.video = video;
+  }
+
   addCategoryId(categoryId: CategoryId): void {
     this.categories_id.set(categoryId.id, categoryId);
   }
@@ -103,26 +172,27 @@ export class Video extends AggregateRoot {
     this.categories_id.delete(categoryId.id);
   }
 
-  syncCategoriesIds(categoriesIds: CategoryId[]): void {
-    if (!categoriesIds.length) {
+  syncCategoriesId(categoriesId: CategoryId[]): void {
+    if (!categoriesId.length) {
       throw new Error('Categories id is empty');
     }
-    this.categories_id = new Map(categoriesIds.map((id) => [id.id, id]));
+
+    this.categories_id = new Map(categoriesId.map((id) => [id.id, id]));
   }
 
-  addGenreId(genresId: GenreId): void {
-    this.genres_id.set(genresId.id, genresId);
+  addGenreId(genreId: GenreId): void {
+    this.genres_id.set(genreId.id, genreId);
   }
 
-  removeGenreId(genresId: GenreId): void {
-    this.genres_id.delete(genresId.id);
+  removeGenreId(genreId: GenreId): void {
+    this.genres_id.delete(genreId.id);
   }
 
-  syncGenresIds(genresIds: GenreId[]): void {
-    if (!genresIds.length) {
-      throw new Error('Categories id is empty');
+  syncGenresId(genresId: GenreId[]): void {
+    if (!genresId.length) {
+      throw new Error('Genres id is empty');
     }
-    this.genres_id = new Map(genresIds.map((id) => [id.id, id]));
+    this.genres_id = new Map(genresId.map((id) => [id.id, id]));
   }
 
   addCastMemberId(castMemberId: CastMemberId): void {
@@ -133,14 +203,23 @@ export class Video extends AggregateRoot {
     this.cast_members_id.delete(castMemberId.id);
   }
 
-  syncCastMemberIds(castMemberIds: CastMemberId[]): void {
-    if (!castMemberIds.length) {
-      throw new Error('Categories id is empty');
+  syncCastMembersId(castMembersId: CastMemberId[]): void {
+    if (!castMembersId.length) {
+      throw new Error('Cast Members id is empty');
     }
-    this.cast_members_id = new Map(castMemberIds.map((id) => [id.id, id]));
+    this.cast_members_id = new Map(castMembersId.map((id) => [id.id, id]));
   }
 
-  get entity_id(): ValueObject {
+  validate(fields?: string[]) {
+    const validator = VideoValidatorFactory.create();
+    return validator.validate(this.notification, this, fields);
+  }
+
+  static fake() {
+    return VideoFakeBuilder;
+  }
+
+  get entity_id() {
     return this.video_id;
   }
 
@@ -151,8 +230,14 @@ export class Video extends AggregateRoot {
       description: this.description,
       year_launched: this.year_launched,
       duration: this.duration,
+      rating: this.rating.value,
       is_opened: this.is_opened,
       is_published: this.is_published,
+      banner: this.banner ? this.banner.toJSON() : null,
+      thumbnail: this.thumbnail ? this.thumbnail.toJSON() : null,
+      thumbnail_half: this.thumbnail_half ? this.thumbnail_half.toJSON() : null,
+      trailer: this.trailer ? this.trailer.toJSON() : null,
+      video: this.video ? this.video.toJSON() : null,
       categories_id: Array.from(this.categories_id.values()).map((id) => id.id),
       genres_id: Array.from(this.genres_id.values()).map((id) => id.id),
       cast_members_id: Array.from(this.cast_members_id.values()).map(
